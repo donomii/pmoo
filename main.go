@@ -103,9 +103,6 @@ func main() {
 	if err := i.Use(interp.Symbols); err != nil {
 		panic(err)
 	}
-	if err := i.Use(interp.Symbols()); err != nil {
-		panic(err)
-	}
 	/*
 		if err := i.Use(syscall.Symbols); err != nil {
 			panic(err)
