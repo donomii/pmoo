@@ -68,14 +68,20 @@ func SaveObject(o Object) {
 	panicErr(err)
 }
 
-func LoadObject(id string) Object {
+func LoadObject(id string) *Object {
 	log.Println("Loading " + "objects/" + id + ".json")
-	file, _ := ioutil.ReadFile("objects/" + id + ".json")
+	file, err := ioutil.ReadFile("objects/" + id + ".json")
+	if err != nil {
+		return nil
+	}
 
 	data := Object{}
 
-	_ = json.Unmarshal([]byte(file), &data)
-	return data
+	err = json.Unmarshal([]byte(file), &data)
+	if err != nil {
+		return nil
+	}
+	return &data
 }
 func ParseDo(s string) (string, string) {
 	log.Println("Splitting", s, "on", ".")
@@ -84,7 +90,7 @@ func ParseDo(s string) (string, string) {
 	return ss[0], ss[1]
 }
 
-func GetProperty(o Object, name string, timeout int) *Property {
+func GetProperty(o *Object, name string, timeout int) *Property {
 	if timeout < 1 {
 		log.Printf("Timeout while looking up %v on %v\n", name, o.Id)
 		return nil
@@ -100,7 +106,7 @@ func GetProperty(o Object, name string, timeout int) *Property {
 	return GetProperty(LoadObject(parent), name, timeout-1)
 }
 
-func GetVerb(o Object, name string, timeout int) *Verb {
+func GetVerb(o *Object, name string, timeout int) *Verb {
 	log.Println(o)
 	if timeout < 1 {
 		log.Printf("Timeout while looking up %v on %v\n", name, o.Id)
