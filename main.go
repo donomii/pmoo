@@ -84,8 +84,8 @@ func LoadObject(id string) *Object {
 	return &data
 }
 func ParseDo(s string) (string, string) {
-	log.Println("Splitting", s, "on", ".")
-	ss := strings.Split(s, ".")
+	log.Println("Splitting", s, "on", ":")
+	ss := strings.Split(s, ":")
 	ss = append(ss, "no property")
 	return ss[0], ss[1]
 }
