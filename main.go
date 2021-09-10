@@ -1,19 +1,15 @@
 package pmoo
 
 import (
-	"bufio"
 	"encoding/json"
+	"errors"
 	"fmt"
-	"go/build"
 	"io/ioutil"
 	"log"
 	"os"
-	"reflect"
 	"strings"
 
 	"github.com/mattn/go-shellwords"
-	"github.com/traefik/yaegi/interp"
-	"github.com/traefik/yaegi/stdlib"
 )
 
 type Property struct {
@@ -78,83 +74,66 @@ func ParseDo(s string) (string, string) {
 	ss = append(ss, "no property")
 	return ss[0], ss[1]
 }
-func main() {
-	coreObj := Object{}
-	coreObj.Verbs = map[string]Verb{}
-	coreObj.Properties = map[string]Property{}
-	ver := Verb{Value: `
-	var objStr, propStr string
-	objStr, propStr = ParseDo(do)
-	var o Object
-	var p Property
-	o= LoadObject(obj)
-	p= Property{Value: ind}
-	o.Properties[prop] = p
-	SaveObject(obj)
-	log.Println(obj)
-	`}
-	coreObj.Verbs["property"] = ver
-	SaveObject(coreObj)
-	i := interp.New(interp.Options{GoPath: build.Default.GOPATH, BuildTags: strings.Split("", ",")})
-	if err := i.Use(stdlib.Symbols); err != nil {
-		panic(err)
+
+func LexLine(editorCmd string) (string, []string, error) {
+	var args []string
+	state := "start"
+	current := ""
+	quote := "\""
+	for i := 0; i < len(editorCmd); i++ {
+		c := editorCmd[i]
+
+		if state == "quotes" {
+			if string(c) != quote {
+				current += string(c)
+			} else {
+				args = append(args, current)
+				current = ""
+				state = "start"
+			}
+			continue
+		}
+
+		if c == '"' || c == '\'' {
+			state = "quotes"
+			quote = string(c)
+			continue
+		}
+
+		if state == "arg" {
+			if c == ' ' || c == '\t' {
+				args = append(args, current)
+				current = ""
+				state = "start"
+			} else {
+				current += string(c)
+			}
+			continue
+		}
+
+		if c != ' ' && c != '\t' {
+			state = "arg"
+			current += string(c)
+		}
 	}
 
-	if err := i.Use(interp.Symbols); err != nil {
-		panic(err)
+	if state == "quotes" {
+		return "", []string{}, errors.New(fmt.Sprintf("Unclosed quote in command line: %s", editorCmd))
 	}
-	/*
-		if err := i.Use(syscall.Symbols); err != nil {
-			panic(err)
-		}
 
-		// Using a environment var allows a nested interpreter to import the syscall package.
-		if err := os.Setenv("YAEGI_SYSCALL", "1"); err != nil {
-			panic(err)
-		}
-
-		if err := i.Use(unsafe.Symbols); err != nil {
-			panic(err)
-		}
-		if err := os.Setenv("YAEGI_UNSAFE", "1"); err != nil {
-			panic(err)
-		}
-
-		// Use of unrestricted symbols should always follow stdlib and syscall symbols, to update them.
-		if err := i.Use(unrestricted.Symbols); err != nil {
-			panic(err)
-		}
-	*/
-	i.Eval(lib())
-	log.Println("libs loaded")
-	reader := bufio.NewReader(os.Stdin)
-	var verb Verb
-	for {
-		fmt.Println(verb)
-		fmt.Print("Enter text: ")
-		text, _ := reader.ReadString('\n')
-		fmt.Println(text)
-		verb, directObject, preposition, indirectObject := breakSentence(text)
-		call := lib() + ` 
-		func runme() {
-		do := "` + directObject + `"` + `
-		prep := "` + preposition + `"` + `
-		ind := "` + indirectObject + `"
-		`
-		obj, _ := ParseDo(directObject)
-		do := LoadObject(obj)
-		ve := do.Verbs[verb]
-		log.Println(do)
-		log.Println("Verb", verb, "is", ve)
-		call = call + ve.Value + "}"
-		log.Println("Evalling ", call)
-		var v reflect.Value
-		v, err := i.Eval(call)
-		fmt.Println(err)
-		if v.IsValid() {
-			fmt.Println(v)
-		}
+	if current != "" {
+		args = append(args, current)
 	}
+
+	if len(args) <= 0 {
+		return "", []string{}, errors.New("Empty command line")
+	}
+
+	if len(args) == 1 {
+		return args[0], []string{}, nil
+	}
+
+	return args[0], nil
 }
 
 func lib() string {
