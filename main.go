@@ -59,7 +59,7 @@ func DumpObject(id string) {
 func L(s interface{}) {
 	log.Println(s)
 }
-func SaveObject(o Object) {
+func SaveObject(o *Object) {
 
 	os.Mkdir("objects", 0777)
 	txt, err := json.MarshalIndent(o, "", " ")
