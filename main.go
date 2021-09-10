@@ -49,9 +49,9 @@ func panicErr(err error) {
 	}
 }
 func FormatObject(id string) string {
-	txt, err := json.MarshalIndent(o, "", " ")
+	txt, err := json.MarshalIndent(LoadObject(id), "", " ")
 	panicErr(err)
-	return txt
+	return string(txt)
 }
 func DumpObject(id string) {
 	fmt.Println(FormatObject(id))
