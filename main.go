@@ -84,6 +84,30 @@ func ParseDo(s string) (string, string) {
 	return ss[0], ss[1]
 }
 
+func GetProperty(o Object, name string) *Property {
+	val, ok := o.Properties[name]
+	if ok {
+		return &val
+	}
+	parent := o.Properties["parent"].Value
+	if parent == fmt.Sprintf("%v", o.Id) {
+		return nil
+	}
+	return GetProperty(LoadObject(parent), name)
+}
+
+func GetVerb(o Object, name string) *Verb {
+	val, ok := o.Verbs[name]
+	if ok {
+		return &val
+	}
+	parent := o.Verbs["parent"].Value
+	if parent == fmt.Sprintf("%v", o.Id) {
+		return nil
+	}
+	return GetVerb(LoadObject(parent), name)
+}
+
 //from https://github.com/laurent22/massren/
 func LexLine(editorCmd string) ([]string, error) {
 	var args []string
