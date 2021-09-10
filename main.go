@@ -109,7 +109,11 @@ func GetVerb(o Object, name string, timeout int) *Verb {
 	if ok {
 		return &val
 	}
-	parent := o.Properties["parent"].Value
+	parentProp, ok := o.Properties["parent"]
+	if !ok {
+		panic(fmt.Sprintf("No parent for %v", o.Id))
+	}
+	parent := parentProp.Value
 	log.Printf("Searching %v, then parent %v\n", fmt.Sprintf("%v", o.Id), parent)
 	if parent == fmt.Sprintf("%v", o.Id) {
 		return nil
