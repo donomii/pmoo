@@ -84,7 +84,11 @@ func ParseDo(s string) (string, string) {
 	return ss[0], ss[1]
 }
 
-func GetProperty(o Object, name string) *Property {
+func GetProperty(o Object, name string, timeout int) *Property {
+	if timeout < 1 {
+		log.Printf("Timeout while looking up %v on %v\n", name, o.Id)
+		return nil
+	}
 	val, ok := o.Properties[name]
 	if ok {
 		return &val
@@ -93,10 +97,14 @@ func GetProperty(o Object, name string) *Property {
 	if parent == fmt.Sprintf("%v", o.Id) {
 		return nil
 	}
-	return GetProperty(LoadObject(parent), name)
+	return GetProperty(LoadObject(parent), name, timeout-1)
 }
 
-func GetVerb(o Object, name string) *Verb {
+func GetVerb(o Object, name string, timeout int) *Verb {
+	if timeout < 1 {
+		log.Printf("Timeout while looking up %v on %v\n", name, o.Id)
+		return nil
+	}
 	val, ok := o.Verbs[name]
 	if ok {
 		return &val
@@ -105,7 +113,7 @@ func GetVerb(o Object, name string) *Verb {
 	if parent == fmt.Sprintf("%v", o.Id) {
 		return nil
 	}
-	return GetVerb(LoadObject(parent), name)
+	return GetVerb(LoadObject(parent), name, timeout-1)
 }
 
 //from https://github.com/laurent22/massren/
