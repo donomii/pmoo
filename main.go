@@ -110,6 +110,7 @@ func GetVerb(o Object, name string, timeout int) *Verb {
 		return &val
 	}
 	parent := o.Verbs["parent"].Value
+	log.Printf("Searching %v\n", fmt.Sprintf("%v", o.Id))
 	if parent == fmt.Sprintf("%v", o.Id) {
 		return nil
 	}
