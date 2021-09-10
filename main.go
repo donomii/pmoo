@@ -77,6 +77,7 @@ func ParseDo(s string) (string, string) {
 	return ss[0], ss[1]
 }
 
+//from https://github.com/laurent22/massren/
 func LexLine(editorCmd string) ([]string, error) {
 	var args []string
 	state := "start"
