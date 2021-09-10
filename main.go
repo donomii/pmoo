@@ -101,6 +101,7 @@ func GetProperty(o Object, name string, timeout int) *Property {
 }
 
 func GetVerb(o Object, name string, timeout int) *Verb {
+	log.Println(o)
 	if timeout < 1 {
 		log.Printf("Timeout while looking up %v on %v\n", name, o.Id)
 		return nil
