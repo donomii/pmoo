@@ -109,8 +109,8 @@ func GetVerb(o Object, name string, timeout int) *Verb {
 	if ok {
 		return &val
 	}
-	parent := o.Verbs["parent"].Value
-	log.Printf("Searching %v\n", fmt.Sprintf("%v", o.Id))
+	parent := o.Properties["parent"].Value
+	log.Printf("Searching %v, then parent %v\n", fmt.Sprintf("%v", o.Id), parent)
 	if parent == fmt.Sprintf("%v", o.Id) {
 		return nil
 	}
