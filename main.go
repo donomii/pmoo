@@ -9,7 +9,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/mattn/go-shellwords"
 )
 
 type Property struct {
@@ -35,8 +34,8 @@ type Object struct {
 	Id         int
 }
 
-func breakSentence(s string) (string, string, string, string) {
-	x, _ := shellwords.Parse(s)
+func BreakSentence(s string) (string, string, string, string) {
+	x, _ := LexLine(s)
 	log.Printf("Parsed line into %v", x)
 	x = append(x, "oops")
 	x = append(x, "oops")
