@@ -120,7 +120,7 @@ func GetProperty(o *Object, name string, timeout int) *Property {
 }
 
 func GetVerb(o *Object, name string, timeout int) *Verb {
-	log.Println(o)
+	//log.Println(o)
 	if timeout < 1 {
 		log.Printf("Timeout while looking up %v on %v\n", name, o.Id)
 		return nil
@@ -206,80 +206,3 @@ func LexLine(editorCmd string) ([]string, error) {
 
 	return args, nil
 }
-
-func lib() string {
-	return `
-	import (
-	
-		"os"
-
-	)
-	type Property struct {
-		Value       string
-		Owner       string
-		Read        bool
-		Write       bool
-		ChangeOwner bool
-	}
-	
-	type Verb struct {
-		Value   string
-		Owner   string
-		Read    bool
-		Write   bool
-		Execute bool
-		Debug   bool
-	}
-	
-	type Object struct {
-		Properties map[string]Property
-		Verbs      map[string]Verb
-		Id         int
-	}
-	
-	func SaveObject(o Object) {
-os.Mkdir("objects", 0777)
-txt, err := json.Marshal(o)
-panicErr(err)
-err = ioutil.WriteFile(fmt.Sprintf("objects/%v.json", o.Id), txt, 0600)
-panicErr(err)
-}
-
-func LoadObject(id string) Object {
-log.Println("Loading " + "objects/" + id + ".json")
-file, _ := ioutil.ReadFile("objects/" + id + ".json")
-
-data := Object{}
-
-_ = json.Unmarshal([]byte(file), &data)
-return data
-}
-func ParseDo(s string) (string, string) {
-log.Println("Splitting", s, "on", ".")
-ss := strings.Split(s, ".")
-ss = append(ss, "no property")
-return ss[0], ss[1]
-}`
-}
-
-/*
-name
-a string, the usual name for this object
-owner
-an object, the player who controls access to it
-location
-an object, where the object is in virtual reality
-contents
-a list of objects, the inverse of location
-programmer
-a bit, does the object have programmer rights?
-wizard
-a bit, does the object have wizard rights?
-r
-a bit, is the object publicly readable?
-w
-a bit, is the object publicly writable?
-f
-a bit, is the object fertile?
-
-*/
