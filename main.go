@@ -8,7 +8,6 @@ import (
 	"log"
 	"os"
 	"strings"
-
 )
 
 type Property struct {
@@ -55,7 +54,7 @@ func L(s interface{}) {
 func SaveObject(o Object) {
 
 	os.Mkdir("objects", 0777)
-	txt, err := json.Marshal(o)
+	txt, err := json.MarshalIndent(o, "", " ")
 	panicErr(err)
 	err = ioutil.WriteFile(fmt.Sprintf("objects/%v.json", o.Id), txt, 0600)
 	panicErr(err)
