@@ -95,6 +95,9 @@ func GetProperty(o *Object, name string, timeout int) *Property {
 		log.Printf("Timeout while looking up %v on %v\n", name, o.Id)
 		return nil
 	}
+	if o == nil {
+		return nil
+	}
 	val, ok := o.Properties[name]
 	if ok {
 		return &val
@@ -112,6 +115,10 @@ func GetVerb(o *Object, name string, timeout int) *Verb {
 		log.Printf("Timeout while looking up %v on %v\n", name, o.Id)
 		return nil
 	}
+	if o == nil {
+		return nil
+	}
+
 	val, ok := o.Verbs[name]
 	if ok {
 		return &val
