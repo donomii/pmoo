@@ -118,7 +118,7 @@ func LexLine(editorCmd string) ([]string, error) {
 	}
 
 	if state == "quotes" {
-		return "", []string{}, errors.New(fmt.Sprintf("Unclosed quote in command line: %s", editorCmd))
+		return []string{}, errors.New(fmt.Sprintf("Unclosed quote in command line: %s", editorCmd))
 	}
 
 	if current != "" {
@@ -126,14 +126,14 @@ func LexLine(editorCmd string) ([]string, error) {
 	}
 
 	if len(args) <= 0 {
-		return "", []string{}, errors.New("Empty command line")
+		return []string{}, errors.New("Empty command line")
 	}
 
 	if len(args) == 1 {
-		return args[0], []string{}, nil
+		return args, nil
 	}
 
-	return args[0], nil
+	return args, nil
 }
 
 func lib() string {
