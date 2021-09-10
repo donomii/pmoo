@@ -49,7 +49,7 @@ func panicErr(err error) {
 		panic(err)
 	}
 }
-func L(s string) {
+func L(s interface{}) {
 	log.Println(s)
 }
 func SaveObject(o Object) {
