@@ -83,7 +83,13 @@ func LoadObject(id string) *Object {
 	}
 	return &data
 }
-func ParseDo(s string) (string, string) {
+func ParseDo(s string, objId string) (string, string) {
+	if s == "me" {
+		return objId, ""
+	}
+	if s == "here" {
+		return GetProperty(LoadObject(objId), "location", 10).Value, ""
+	}
 	if s[0] == '#' {
 		s = s[1:]
 		log.Println("Splitting", s, "on", ".")
@@ -92,7 +98,6 @@ func ParseDo(s string) (string, string) {
 		return ss[0], ss[1]
 	}
 	return s, ""
-
 }
 
 func GetProperty(o *Object, name string, timeout int) *Property {
