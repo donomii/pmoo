@@ -48,6 +48,14 @@ func panicErr(err error) {
 		panic(err)
 	}
 }
+func FormatObject(id string) string {
+	txt, err := json.MarshalIndent(o, "", " ")
+	panicErr(err)
+	return txt
+}
+func DumpObject(id string) {
+	fmt.Println(FormatObject(id))
+}
 func L(s interface{}) {
 	log.Println(s)
 }
