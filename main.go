@@ -49,6 +49,9 @@ func panicErr(err error) {
 		panic(err)
 	}
 }
+func L(s string) {
+	log.Println(s)
+}
 func SaveObject(o Object) {
 
 	os.Mkdir("objects", 0777)
