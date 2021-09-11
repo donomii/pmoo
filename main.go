@@ -182,8 +182,9 @@ func SetProperty(o *Object, name, value string) {
 	if prop == nil {
 		panic("Can't get property")
 	}
-	prop.Value = value
-	o.Properties[name] = *prop
+	p := *prop
+	p.Value = value
+	o.Properties[name] = p
 }
 
 //from https://github.com/laurent22/massren/
