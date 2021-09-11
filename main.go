@@ -255,7 +255,7 @@ func MoveObj(objstr, targetstr string) {
 	target := LoadObject(targetstr)
 
 	//Remove from old location
-	oldlocationstrprop := GetProperty(obj, "location", 10).Value
+	oldlocationstr := GetProperty(obj, "location", 10).Value
 	log.Printf("Old location: %v", oldlocationstr)
 	oldloc := LoadObject(oldlocationstr)
 	log.Printf("Old location object: %v", oldloc)
