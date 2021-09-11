@@ -22,20 +22,8 @@ type Property struct {
 	Verb        bool
 }
 
-type Verb struct {
-	Value       string
-	Owner       string
-	Read        bool
-	Write       bool
-	Execute     bool
-	Debug       bool
-	ChangeOwner bool
-	Verb        bool
-}
-
 type Object struct {
 	Properties map[string]Property
-	Verbs      map[string]Verb
 	Id         int
 }
 
@@ -113,25 +101,15 @@ func ParseDo(s string, objId string) (string, string) {
 }
 
 func GetProperty(o *Object, name string, timeout int) *Property {
-	if timeout < 1 {
-		log.Printf("Timeout while looking up %v on %v\n", name, o.Id)
+	out := GetVerb(o, name, timeout)
+	if out.Verb {
+		fmt.Printf("Can't find property '%v', but could find verb '%v'\n", name, name)
 		return nil
 	}
-	if o == nil {
-		return nil
-	}
-	val, ok := o.Properties[name]
-	if ok {
-		return &val
-	}
-	parent := o.Properties["parent"].Value
-	if parent == fmt.Sprintf("%v", o.Id) {
-		return nil
-	}
-	return GetProperty(LoadObject(parent), name, timeout-1)
+	return out
 }
 
-func GetVerb(o *Object, name string, timeout int) *Verb {
+func GetVerb(o *Object, name string, timeout int) *Property {
 	//log.Println(o)
 	if timeout < 1 {
 		log.Printf("Timeout while looking up %v on %v\n", name, o.Id)
@@ -141,16 +119,22 @@ func GetVerb(o *Object, name string, timeout int) *Verb {
 		return nil
 	}
 
-	val, ok := o.Verbs[name]
+	val, ok := o.Properties[name]
 	if ok {
+		if !val.Verb {
+			fmt.Printf("Can't find verb '%v', but could find property '%v'\n", name, name)
+			return nil
+		}
 		return &val
 	}
 	parentProp, ok := o.Properties["parent"]
 	if !ok {
+		//All objects must have a parent
 		panic(fmt.Sprintf("No parent for %v", o.Id))
 	}
 	parent := parentProp.Value
 	log.Printf("Searching %v, then parent %v\n", fmt.Sprintf("%v", o.Id), parent)
+	//Object points to itself, time to quit
 	if parent == fmt.Sprintf("%v", o.Id) {
 		return nil
 	}
