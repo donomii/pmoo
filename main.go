@@ -16,16 +16,21 @@ type Property struct {
 	Owner       string
 	Read        bool
 	Write       bool
+	Execute     bool
+	Debug       bool
 	ChangeOwner bool
+	Verb        bool
 }
 
 type Verb struct {
-	Value   string
-	Owner   string
-	Read    bool
-	Write   bool
-	Execute bool
-	Debug   bool
+	Value       string
+	Owner       string
+	Read        bool
+	Write       bool
+	Execute     bool
+	Debug       bool
+	ChangeOwner bool
+	Verb        bool
 }
 
 type Object struct {
@@ -185,6 +190,15 @@ func SetProperty(o *Object, name, value string) {
 	p := *prop
 	p.Value = value
 	o.Properties[name] = p
+	SaveObject(o)
+}
+
+func SplitStringList(s string) []string {
+	return strings.Split(s, ",")
+}
+
+func BuildStringList(l []string) string {
+	return strings.Join(l, ",")
 }
 
 //from https://github.com/laurent22/massren/
