@@ -177,6 +177,15 @@ func CloneObject(o *Object) *Object {
 	return &out
 }
 
+func SetProperty(o *Object, name, value string) {
+	prop := GetProperty(o, name, 10)
+	if prop == nil {
+		panic("Can't get property")
+	}
+	prop.Value = value
+	o.Properties[name] = *prop
+}
+
 //from https://github.com/laurent22/massren/
 func LexLine(editorCmd string) ([]string, error) {
 	var args []string
