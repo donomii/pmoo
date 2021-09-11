@@ -95,6 +95,12 @@ func ParseDo(s string, objId string) (string, string) {
 		log.Println("Splitting", s, "on", ".")
 		ss := strings.Split(s, ".")
 		ss = append(ss, "no property")
+	if ss[0] == "me" {
+		return objId, ss[1]
+	}
+	if ss[0] == "here" {
+		return GetProperty(LoadObject(objId), "location", 10).Value, ss[1]
+	}
 		return ss[0], ss[1]
 	}
 	return s, ""
