@@ -84,6 +84,16 @@ func ParseDo(s string, objId string) (string, string) {
 	if s == "here" {
 		return GetProperty(LoadObject(objId), "location", 10).Value, ""
 	}
+	if s[0] == '$' {
+		prop := s[1:]
+		one := LoadObject("1")
+		oneprop := GetProperty(one, prop, 10)
+		if oneprop == nil {
+			fmt.Sprintf("Could not find special property %v on 1\n", prop)
+		}
+		objstr := oneprop.Value
+		return objstr, ""
+	}
 	if s[0] == '#' {
 		s = s[1:]
 		log.Println("Splitting", s, "on", ".")
@@ -221,6 +231,9 @@ func BuildStringList(l []string) string {
 }
 
 func AddToStringList(l, s string) string {
+	if l == "" {
+		return s
+	}
 	return l + "," + s
 }
 
@@ -242,7 +255,7 @@ func MoveObj(objstr, targetstr string) {
 	target := LoadObject(targetstr)
 
 	//Remove from old location
-	oldlocationstr := GetProperty(obj, "location", 10).Value
+	oldlocationstrprop := GetProperty(obj, "location", 10).Value
 	log.Printf("Old location: %v", oldlocationstr)
 	oldloc := LoadObject(oldlocationstr)
 	log.Printf("Old location object: %v", oldloc)
