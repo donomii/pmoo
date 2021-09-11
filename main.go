@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -95,12 +96,12 @@ func ParseDo(s string, objId string) (string, string) {
 		log.Println("Splitting", s, "on", ".")
 		ss := strings.Split(s, ".")
 		ss = append(ss, "no property")
-	if ss[0] == "me" {
-		return objId, ss[1]
-	}
-	if ss[0] == "here" {
-		return GetProperty(LoadObject(objId), "location", 10).Value, ss[1]
-	}
+		if ss[0] == "me" {
+			return objId, ss[1]
+		}
+		if ss[0] == "here" {
+			return GetProperty(LoadObject(objId), "location", 10).Value, ss[1]
+		}
 		return ss[0], ss[1]
 	}
 	return s, ""
@@ -149,6 +150,31 @@ func GetVerb(o *Object, name string, timeout int) *Verb {
 		return nil
 	}
 	return GetVerb(LoadObject(parent), name, timeout-1)
+}
+
+func GetFreshId() int {
+	root := LoadObject("0")
+	lastId := GetProperty(root, "lastId", 10)
+	if lastId == nil {
+		panic("Can't get lastId")
+	}
+
+	id, _ := strconv.Atoi(lastId.Value)
+	id = id + 1
+	newLastId := fmt.Sprintf("%v", id)
+	lastId.Value = newLastId
+	root.Properties["lastId"] = *lastId
+	return id
+
+}
+
+func CloneObject(o *Object) *Object {
+	out := *o
+	desc := out.Properties["description"]
+	desc.Value = "Copy of " + desc.Value
+	out.Properties["description"] = desc
+	out.Id = GetFreshId()
+	return &out
 }
 
 //from https://github.com/laurent22/massren/
