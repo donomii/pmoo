@@ -132,8 +132,9 @@ func GetVerb(o *Object, name string, timeout int) *Property {
 	val, ok := o.Properties[name]
 	if ok {
 		if !val.Verb {
-			fmt.Printf("Can't find verb '%v', but could find property '%v'\n", name, name)
-			return nil
+			//fmt.Printf("Can't find verb '%v', but could find property '%v'\n", name, name)
+			//return nil
+			return GetVerb(LoadObject(parent), name, timeout-1)
 		}
 		return &val
 	}
