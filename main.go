@@ -277,7 +277,7 @@ func MoveObj(objstr, targetstr string) {
 	log.Printf("Old location: %v", oldlocationstr)
 	oldloc := LoadObject(oldlocationstr)
 	log.Printf("Old location object: %v", oldloc)
-	oldcontainerstr := GetProp(oldloc, "contains", 10)
+	oldcontainerstr := GetProp(oldloc, "contains")
 	newcontainerstr := RemoveFromStringList(oldcontainerstr, objstr)
 	log.Printf("New container string %v", newcontainerstr)
 	SetProp(oldlocationstr, "contains", newcontainerstr)
