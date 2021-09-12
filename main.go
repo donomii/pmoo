@@ -269,9 +269,6 @@ func RemoveFromStringList(l, s string) string {
 //Implementing move as a built-in because it is complicated enough to need it
 func MoveObj(objstr, targetstr string) {
 	log.Printf("Moving %v to %v", objstr, targetstr)
-
-	target := LoadObject(targetstr)
-
 	//Remove from old location
 	oldlocationstr := GetProp(objstr, "location")
 	log.Printf("Old location: %v", oldlocationstr)
