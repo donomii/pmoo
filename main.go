@@ -173,7 +173,7 @@ func GetVerbStruct(o *Object, name string, timeout int) *Property {
 }
 
 func GetFreshId() int {
-	root := LoadObject("0")
+	root := LoadObject("1")
 	lastId := GetProperty(root, "lastId", 10)
 	if lastId == nil {
 		panic("Can't get lastId")
@@ -284,7 +284,7 @@ func MoveObj(objstr, targetstr string) {
 	//Add to target container
 	oldtargetcontainerstr := GetProp(targetstr, "contains")
 	newtargetcontainerstr := AddToStringList(oldtargetcontainerstr, objstr)
-	log.Printf("New target container string %v", newtargetcontainerstr)
+	log.Printf("xtainer string %v", newtargetcontainerstr)
 	SetProp(targetstr, "contains", newtargetcontainerstr)
 
 	//Set the object's new location
