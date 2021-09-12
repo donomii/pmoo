@@ -190,11 +190,11 @@ func CloneObject(o *Object) *Object {
 	out.Properties["name"] = name
 
 	out.Id = GetFreshId()
-	SaveObject(out)
+	SaveObject(&out)
 	return &out
 }
 
-func Clone(objstr string) objstr {
+func Clone(objstr string) string {
 	sourceO := LoadObject(objstr)
 	newO := CloneObject(sourceO)
 	return ToStr(newO.Id)
