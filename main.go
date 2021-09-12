@@ -128,7 +128,16 @@ func GetProp(objstr, name string) string {
 	}
 }
 
-func GetVerb(o *Object, name string, timeout int) *Property {
+func GetVerb(objstr, name string) string {
+	p := GetVerbStruct(LoadObject(objstr), name, 10)
+	if p != nil {
+		return p.Value
+	} else {
+		return ""	
+	}
+}
+
+func GetVerbStruct(o *Object, name string, timeout int) *Property {
 	//log.Println(o)
 	if timeout < 1 {
 		log.Printf("Timeout while looking up %v on %v\n", name, o.Id)
@@ -150,7 +159,7 @@ func GetVerb(o *Object, name string, timeout int) *Property {
 		if !val.Verb {
 			//fmt.Printf("Can't find verb '%v', but could find property '%v'\n", name, name)
 			//return nil
-			return GetVerb(LoadObject(parent), name, timeout-1)
+			return GetVerbStruct(LoadObject(parent), name, timeout-1)
 		}
 		return &val
 	}
@@ -160,7 +169,7 @@ func GetVerb(o *Object, name string, timeout int) *Property {
 	if parent == fmt.Sprintf("%v", o.Id) {
 		return nil
 	}
-	return GetVerb(LoadObject(parent), name, timeout-1)
+	return GetVerbStruct(LoadObject(parent), name, timeout-1)
 }
 
 func GetFreshId() int {
@@ -216,7 +225,7 @@ func SetProp(objstr, name, value string) {
 }
 
 func SetVerb(o *Object, name, value string) {
-	prop := GetVerb(o, name, 10)
+	prop := GetVerbStruct(o, name, 10)
 	if prop == nil {
 		panic("Can't get verb")
 	}
