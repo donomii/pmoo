@@ -4,11 +4,18 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"go/build"
 	"io/ioutil"
 	"log"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/traefik/yaegi/interp"
+	"github.com/traefik/yaegi/stdlib"
+	"github.com/traefik/yaegi/stdlib/syscall"
+	"github.com/traefik/yaegi/stdlib/unrestricted"
+	"github.com/traefik/yaegi/stdlib/unsafe"
 )
 
 type Property struct {
@@ -263,6 +270,66 @@ func RemoveFromStringList(l, s string) string {
 		}
 	}
 	return BuildStringList(out)
+}
+
+func NewInterpreter() *interp.Interpreter {
+	i := interp.New(interp.Options{GoPath: build.Default.GOPATH, BuildTags: strings.Split("", ",")})
+	if err := i.Use(stdlib.Symbols); err != nil {
+		panic(err)
+	}
+
+	if err := i.Use(interp.Symbols); err != nil {
+		panic(err)
+	}
+
+	if err := i.Use(syscall.Symbols); err != nil {
+		panic(err)
+	}
+
+	// Using a environment var allows a nested interpreter to import the syscall package.
+	if err := os.Setenv("YAEGI_SYSCALL", "1"); err != nil {
+		panic(err)
+	}
+
+	if err := i.Use(unsafe.Symbols); err != nil {
+		panic(err)
+	}
+	if err := os.Setenv("YAEGI_UNSAFE", "1"); err != nil {
+		panic(err)
+	}
+
+	// Use of unrestricted symbols should always follow stdlib and syscall symbols, to update them.
+	if err := i.Use(unrestricted.Symbols); err != nil {
+		panic(err)
+	}
+
+	return i
+
+}
+
+func Eval(i *interp.Interpreter, code string) {
+	log.Println("Evalling:", code)
+
+	_, err := i.Eval(`
+		
+	func runme(){
+
+	` + code + `}
+func main() {runme()}`)
+	if err != nil {
+		fmt.Println("An error occurred:", err)
+	}
+}
+
+func CallVerb(obj, verb string) {
+
+	i := NewInterpreter()
+	i.Eval(`		
+	import . "github.com/donomii/pmoo"
+	import "os"
+	import . "fmt"`)
+	v := GetVerb(obj, verb)
+	Eval(i, v)
 }
 
 //Implementing move as a built-in because it is complicated enough to need it
