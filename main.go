@@ -32,6 +32,7 @@ func SetQ(queue chan *Message) {
 }
 
 func Tell(from, target, message string) {
+	log.Println(" queueing Message")
 	Q <- &Message{from, target, "tell", message}
 	log.Println("Message queued")
 }
