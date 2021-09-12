@@ -184,6 +184,7 @@ func GetFreshId() int {
 	newLastId := fmt.Sprintf("%v", id)
 	lastId.Value = newLastId
 	root.Properties["lastId"] = *lastId
+	SaveObject(root)
 	return id
 
 }
