@@ -35,7 +35,7 @@ func SetQ(queue chan *Message) {
 }
 
 func Tell(from, target, message string) {
-	QQ = make(chan string, 100)
+	//QQ = make(chan string, 100)
 	log.Printf(" queueing Message to %v", Q)
 	log.Printf(" queueing Message to %v", QQ)
 	//Q <- &Message{from, target, "tell", message}
