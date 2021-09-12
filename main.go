@@ -129,6 +129,13 @@ func GetVerb(o *Object, name string, timeout int) *Property {
 		return nil
 	}
 
+	parentProp, ok := o.Properties["parent"]
+	if !ok {
+		//All objects must have a parent
+		panic(fmt.Sprintf("No parent for %v", o.Id))
+	}
+	parent := parentProp.Value
+
 	val, ok := o.Properties[name]
 	if ok {
 		if !val.Verb {
@@ -138,12 +145,7 @@ func GetVerb(o *Object, name string, timeout int) *Property {
 		}
 		return &val
 	}
-	parentProp, ok := o.Properties["parent"]
-	if !ok {
-		//All objects must have a parent
-		panic(fmt.Sprintf("No parent for %v", o.Id))
-	}
-	parent := parentProp.Value
+
 	log.Printf("Searching %v, then parent %v\n", fmt.Sprintf("%v", o.Id), parent)
 	//Object points to itself, time to quit
 	if parent == fmt.Sprintf("%v", o.Id) {
