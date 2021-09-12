@@ -196,6 +196,11 @@ func CloneObject(o *Object) *Object {
 	desc := out.Properties["description"]
 	desc.Value = "Copy of " + desc.Value
 	out.Properties["description"] = desc
+
+	name := out.Properties["name"]
+	name.Value = "Copy of " + name.Value
+	out.Properties["name"] = name
+
 	out.Id = GetFreshId()
 	return &out
 }
