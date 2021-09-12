@@ -33,6 +33,7 @@ func SetQ(queue chan *Message) {
 
 func Tell(from, target, message string) {
 	Q <- &Message{from, target, "tell", message}
+	log.Println("Message queued")
 }
 
 type Property struct {
