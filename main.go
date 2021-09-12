@@ -18,6 +18,23 @@ import (
 	"github.com/traefik/yaegi/stdlib/unsafe"
 )
 
+type Message struct {
+	Player string
+	Target string
+	Verb   string
+	Data   string
+}
+
+var Q chan *Message
+
+func SetQ(queue chan *Message) {
+	Q = queue
+}
+
+func Tell(from, target, message string) {
+	Q <- &Message{from, target, "tell", message}
+}
+
 type Property struct {
 	Value       string
 	Owner       string
