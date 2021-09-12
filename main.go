@@ -120,7 +120,7 @@ func GetProperty(o *Object, name string, timeout int) *Property {
 }
 
 func GetProp(objstr, name string) string {
-	p := GetProperty(LoadObject(objstr), name)
+	p := GetProperty(LoadObject(objstr), name, 10)
 	if p != nil {
 		return p.Value
 	} else {
