@@ -210,6 +210,7 @@ func Clone(objstr string) string {
 }
 
 func SetProperty(o *Object, name, value string) {
+	log.Printf("Setting property %v on object %v to %v\n", name, o.Id, value)
 	prop := GetProperty(o, name, 10)
 	if prop == nil {
 		prop = &Property{}
@@ -220,6 +221,7 @@ func SetProperty(o *Object, name, value string) {
 	SaveObject(o)
 }
 func SetProp(objstr, name, value string) {
+	log.Printf("Setting prop %v on object %v to %v\n", name, objstr, value)
 	o := LoadObject(objstr)
 	SetProperty(o, name, value)
 }
