@@ -119,6 +119,15 @@ func GetProperty(o *Object, name string, timeout int) *Property {
 	return GetProperty(LoadObject(parent), name, timeout-1)
 }
 
+func GetProp(objstr, name string) string {
+	p := GetProperty(LoadObject(objstr), name)
+	if p != nil {
+		return p.Value
+	} else {
+		return ""
+	}
+}
+
 func GetVerb(o *Object, name string, timeout int) *Property {
 	//log.Println(o)
 	if timeout < 1 {
@@ -181,7 +190,14 @@ func CloneObject(o *Object) *Object {
 	out.Properties["name"] = name
 
 	out.Id = GetFreshId()
+	SaveObject(out)
 	return &out
+}
+
+func Clone(objstr string) objstr {
+	sourceO := LoadObject(objstr)
+	newO := CloneObject(sourceO)
+	return ToStr(newO.Id)
 }
 
 func SetProperty(o *Object, name, value string) {
@@ -193,6 +209,10 @@ func SetProperty(o *Object, name, value string) {
 	p.Value = value
 	o.Properties[name] = p
 	SaveObject(o)
+}
+func SetProp(objstr, name, value string) {
+	o := LoadObject(objstr)
+	SetProperty(o, name, value)
 }
 
 func SetVerb(o *Object, name, value string) {
