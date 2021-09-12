@@ -26,15 +26,18 @@ type Message struct {
 }
 
 var Q chan *Message
+var QQ chan string
 
 func SetQ(queue chan *Message) {
 	Q = queue
 	log.Printf(" set queue to %v", Q)
+	QQ = make(chan string, 100)
 }
 
 func Tell(from, target, message string) {
 	log.Printf(" queueing Message to %v", Q)
-	Q <- &Message{from, target, "tell", message}
+	//Q <- &Message{from, target, "tell", message}
+	QQ <- message
 	log.Println("Message queued")
 }
 
