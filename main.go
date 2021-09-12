@@ -323,14 +323,15 @@ func main() {runme()}`
 	}
 }
 
-func CallVerb(obj, verb string) {
+func CallVerb(obj, player, this, verb, dobjstr, dpropstr, prepositionStr, iobjstr, ipropstr string) {
+	defs := BuildDefinitions(player, this, verb, dobjstr, dpropstr, prepositionStr, iobjstr, ipropstr)
 	i := NewInterpreter()
 	i.Eval(`		
 	import . "github.com/donomii/pmoo"
 	import "os"
 	import . "fmt"`)
 	v := GetVerb(obj, verb)
-	Eval(i, v)
+	Eval(i, defs+v)
 }
 
 //Implementing move as a built-in because it is complicated enough to need it
