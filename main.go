@@ -308,21 +308,21 @@ func NewInterpreter() *interp.Interpreter {
 }
 
 func Eval(i *interp.Interpreter, code string) {
-	log.Println("Evalling:", code)
-
-	_, err := i.Eval(`
+	prog := `
 		
 	func runme(){
 
 	` + code + `}
-func main() {runme()}`)
+func main() {runme()}`
+	log.Println("Evalling:", prog)
+
+	_, err := i.Eval(prog)
 	if err != nil {
 		fmt.Println("An error occurred:", err)
 	}
 }
 
 func CallVerb(obj, verb string) {
-
 	i := NewInterpreter()
 	i.Eval(`		
 	import . "github.com/donomii/pmoo"
