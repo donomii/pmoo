@@ -227,7 +227,7 @@ func SetProp(objstr, name, value string) {
 func SetVerbStruct(o *Object, name, value string) {
 	prop := GetVerbStruct(o, name, 10)
 	if prop == nil {
-		panic("Can't get verb")
+		prop = &Property{Verb: true}
 	}
 	p := *prop
 	p.Value = value
