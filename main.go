@@ -27,6 +27,7 @@ type Message struct {
 
 var Q chan *Message
 var QQ chan string
+var Hello string
 
 func SetQ(queue chan *Message) {
 	Q = queue
@@ -36,6 +37,7 @@ func SetQ(queue chan *Message) {
 
 func Tell(from, target, message string) {
 	//QQ = make(chan string, 100)
+	log.Println("Hellostr:", Hello)
 	log.Printf(" queueing Message to %v", Q)
 	log.Printf(" queueing Message to %v", QQ)
 	//Q <- &Message{from, target, "tell", message}
