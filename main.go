@@ -212,7 +212,7 @@ func Clone(objstr string) string {
 func SetProperty(o *Object, name, value string) {
 	prop := GetProperty(o, name, 10)
 	if prop == nil {
-		panic("Can't get property")
+		prop = Property{}
 	}
 	p := *prop
 	p.Value = value
