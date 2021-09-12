@@ -312,7 +312,8 @@ func Eval(i *interp.Interpreter, code string) {
 		
 	func runme(){
 
-	` + code + `}
+	` + code + `
+}
 func main() {runme()}`
 	log.Println("Evalling:", prog)
 
@@ -416,4 +417,26 @@ func LexLine(editorCmd string) ([]string, error) {
 	}
 
 	return args, nil
+}
+
+func BuildDefinitions(player, this, verb, dobjstr, dpropstr, prepositionStr, iobjstr, ipropstr string) string {
+	definitions := ` 
+
+	player := LoadObject("` + player + `")  //an object, the player who typed the command` + `
+	playerid := "` + player + `"  //an object id, the player who typed the command` + `
+	this := "` + this + `" //an object, the object on which this verb was found
+	caller := LoadObject("` + player + `")  //an object, the same as player
+	verb := "` + verb + `" //a string, the first word of the command
+	//argstr //a string, everything after the first word of the command
+	//args a list of strings, the words in argstr
+	dobjstr := "` + dobjstr + `"` + ` //a string, the direct object string found during parsing
+	dpropstr := "` + dpropstr + `"` + ` //a string, the direct object property string found during parsing
+	dobj := LoadObject("` + dobjstr + `")  //an object, the direct object value found during matching
+	prepstr:= "` + prepositionStr + `" //a string, the prepositional phrase found during parsing
+	iobjstr := "` + iobjstr + `" //a string, the indirect object string
+	ipropstr := "` + ipropstr + `" //a string, the indirect object string
+	iobj := LoadObject("` + iobjstr + `")  //an object, the indirect object value
+
+`
+	return definitions
 }
