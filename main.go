@@ -191,10 +191,6 @@ func GetFreshId() int {
 
 func CloneObject(o *Object) *Object {
 	out := *o
-	desc := out.Properties["description"]
-	desc.Value = "Copy of " + desc.Value
-	out.Properties["description"] = desc
-
 	name := out.Properties["name"]
 	name.Value = "Copy of " + name.Value
 	out.Properties["name"] = name
