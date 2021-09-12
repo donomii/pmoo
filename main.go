@@ -269,7 +269,7 @@ func RemoveFromStringList(l, s string) string {
 //Implementing move as a built-in because it is complicated enough to need it
 func MoveObj(objstr, targetstr string) {
 	log.Printf("Moving %v to %v", objstr, targetstr)
-	obj := LoadObject(objstr)
+
 	target := LoadObject(targetstr)
 
 	//Remove from old location
@@ -283,7 +283,7 @@ func MoveObj(objstr, targetstr string) {
 	SetProp(oldlocationstr, "contains", newcontainerstr)
 
 	//Add to target container
-	oldtargetcontainerstr := GetProperty(target, "contains", 10).Value
+	oldtargetcontainerstr := GetProp(targetstr, "contains")
 	newtargetcontainerstr := AddToStringList(oldtargetcontainerstr, objstr)
 	log.Printf("New target container string %v", newtargetcontainerstr)
 	SetProp(targetstr, "contains", newtargetcontainerstr)
