@@ -133,7 +133,7 @@ func GetVerb(objstr, name string) string {
 	if p != nil {
 		return p.Value
 	} else {
-		return ""	
+		return ""
 	}
 }
 
@@ -224,7 +224,7 @@ func SetProp(objstr, name, value string) {
 	SetProperty(o, name, value)
 }
 
-func SetVerb(o *Object, name, value string) {
+func SetVerbStruct(o *Object, name, value string) {
 	prop := GetVerbStruct(o, name, 10)
 	if prop == nil {
 		panic("Can't get verb")
@@ -233,6 +233,11 @@ func SetVerb(o *Object, name, value string) {
 	p.Value = value
 	o.Properties[name] = p
 	SaveObject(o)
+}
+
+func SetVerb(objstr, name, value string) {
+	o := LoadObject(objstr)
+	SetVerbStruct(o, name, value)
 }
 
 func SplitStringList(s string) []string {
