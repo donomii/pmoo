@@ -280,16 +280,16 @@ func MoveObj(objstr, targetstr string) {
 	oldcontainerstr := GetProperty(oldloc, "contains", 10).Value
 	newcontainerstr := RemoveFromStringList(oldcontainerstr, objstr)
 	log.Printf("New container string %v", newcontainerstr)
-	SetProperty(oldloc, "contains", newcontainerstr)
+	SetProp(oldlocationstr, "contains", newcontainerstr)
 
 	//Add to target container
 	oldtargetcontainerstr := GetProperty(target, "contains", 10).Value
 	newtargetcontainerstr := AddToStringList(oldtargetcontainerstr, objstr)
 	log.Printf("New target container string %v", newtargetcontainerstr)
-	SetProperty(target, "contains", newtargetcontainerstr)
+	SetProp(targetstr, "contains", newtargetcontainerstr)
 
 	//Set the object's new location
-	SetProperty(obj, "location", targetstr)
+	SetProp(objstr, "location", targetstr)
 
 }
 
