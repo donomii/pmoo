@@ -27,21 +27,29 @@ type Object struct {
 	Id         int
 }
 
-func BreakSentence(s string) (string, string, string, string) {
-	x, _ := LexLine(s)
-	log.Printf("Parsed line into %v", x)
-	x = append(x, "oops")
-	x = append(x, "oops")
-	x = append(x, "oops")
-	x = append(x, "oops")
-	return x[0], x[1], x[2], x[3]
-
-}
 func panicErr(err error) {
 	if err != nil {
 		panic(err)
 	}
 }
+
+func ToStr(i interface{}) string {
+	return fmt.Sprintf("%v", i)
+}
+
+func VisibleObjects(player *Object) []string {
+	out := []string{}
+
+	locId := GetProperty(player, "location", 10).Value
+	loc := LoadObject(locId)
+	contains := SplitStringList(GetProperty(loc, "contains", 10).Value)
+	contains = append([]string{locId}, contains...)
+	for _, objId := range contains {
+		out = append(out, objId)
+	}
+	return out
+}
+
 func FormatObject(id string) string {
 	txt, err := json.MarshalIndent(LoadObject(id), "", " ")
 	panicErr(err)
@@ -76,38 +84,6 @@ func LoadObject(id string) *Object {
 		return nil
 	}
 	return &data
-}
-func ParseDo(s string, objId string) (string, string) {
-	if s == "me" {
-		return objId, ""
-	}
-	if s == "here" {
-		return GetProperty(LoadObject(objId), "location", 10).Value, ""
-	}
-	if s[0] == '$' {
-		prop := s[1:]
-		one := LoadObject("1")
-		oneprop := GetProperty(one, prop, 10)
-		if oneprop == nil {
-			fmt.Sprintf("Could not find special property %v on 1\n", prop)
-		}
-		objstr := oneprop.Value
-		return objstr, ""
-	}
-	if s[0] == '#' {
-		s = s[1:]
-		log.Println("Splitting", s, "on", ".")
-		ss := strings.Split(s, ".")
-		ss = append(ss, "no property")
-		if ss[0] == "me" {
-			return objId, ss[1]
-		}
-		if ss[0] == "here" {
-			return GetProperty(LoadObject(objId), "location", 10).Value, ss[1]
-		}
-		return ss[0], ss[1]
-	}
-	return s, ""
 }
 
 //Fixme copied
