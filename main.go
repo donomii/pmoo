@@ -29,6 +29,7 @@ var Q chan *Message
 
 func SetQ(queue chan *Message) {
 	Q = queue
+	log.Printf(" set queue to %v", Q)
 }
 
 func Tell(from, target, message string) {
