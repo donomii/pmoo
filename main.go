@@ -40,10 +40,10 @@ func Tell(from, target, message string) {
 }
 
 func Msg(from, target, verb, arg1 string) {
-	m := &Message{from, target, verb, arg1}
-	log.Printf(" queueing Message %v to %v\n", m, Q)
+	m := &Message{Player: from, Target: target, Verb: verb, Data: arg1}
+	log.Printf("**********Queueing Message %v to %v\n", m, Q)
 	Q <- m
-	log.Println("Message queued")
+	log.Println("**************Message queued")
 }
 
 type Property struct {
