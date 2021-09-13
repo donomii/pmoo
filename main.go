@@ -26,27 +26,26 @@ type Message struct {
 }
 
 var Q chan *Message
-var QQ chan string
-var Hello string
 
 func SetQ(queue chan *Message) {
 	Q = queue
 	log.Printf(" set queue to %v", Q)
-	QQ = make(chan string, 100)
+
 }
 
 func Tell(from, target, message string) {
 	//QQ = make(chan string, 100)
 	log.Println("Hellostr:", Hello)
 	log.Printf(" queueing Message to %v", Q)
-	log.Printf(" queueing Message to %v", QQ)
-	//Q <- &Message{from, target, "tell", message}
-	QQ <- message
+	Q <- &Message{from, target, "tell", message}
 	log.Println("Message queued")
 }
 
 func Msg(from, target, verb, arg1 string) {
-	Q <- &Message{from, target, verb, arg1}
+	m := &Message{from, target, verb, arg1}
+	log.Printf(" queueing Message %v to %v\n", m, Q)
+	Q <- m
+	log.Println("Message queued")
 }
 
 type Property struct {
@@ -79,9 +78,9 @@ func ToStr(i interface{}) string {
 func VisibleObjects(player *Object) []string {
 	out := []string{}
 
-	locId := GetProperty(player, "location", 10).Value
+	locId := GetPropertyStruct(player, "location", 10).Value
 	loc := LoadObject(locId)
-	contains := SplitStringList(GetProperty(loc, "contains", 10).Value)
+	contains := SplitStringList(GetPropertyStruct(loc, "contains", 10).Value)
 	contains = append([]string{locId}, contains...)
 	for _, objId := range contains {
 		out = append(out, objId)
@@ -126,7 +125,7 @@ func LoadObject(id string) *Object {
 }
 
 //Fixme copied
-func GetProperty(o *Object, name string, timeout int) *Property {
+func GetPropertyStruct(o *Object, name string, timeout int) *Property {
 	//log.Println(o)
 	if timeout < 1 {
 		log.Printf("Timeout while looking up %v on %v\n", name, o.Id)
@@ -155,11 +154,11 @@ func GetProperty(o *Object, name string, timeout int) *Property {
 	if parent == fmt.Sprintf("%v", o.Id) {
 		return nil
 	}
-	return GetProperty(LoadObject(parent), name, timeout-1)
+	return GetPropertyStruct(LoadObject(parent), name, timeout-1)
 }
 
 func GetProp(objstr, name string) string {
-	p := GetProperty(LoadObject(objstr), name, 10)
+	p := GetPropertyStruct(LoadObject(objstr), name, 10)
 	if p != nil {
 		return p.Value
 	} else {
@@ -213,7 +212,7 @@ func GetVerbStruct(o *Object, name string, timeout int) *Property {
 
 func GetFreshId() int {
 	root := LoadObject("1")
-	lastId := GetProperty(root, "lastId", 10)
+	lastId := GetPropertyStruct(root, "lastId", 10)
 	if lastId == nil {
 		panic("Can't get lastId")
 	}
@@ -247,7 +246,7 @@ func Clone(objstr string) string {
 
 func SetProperty(o *Object, name, value string) {
 	log.Printf("Setting property %v on object %v to %v\n", name, o.Id, value)
-	prop := GetProperty(o, name, 10)
+	prop := GetPropertyStruct(o, name, 10)
 	if prop == nil {
 		prop = &Property{}
 	}
