@@ -147,7 +147,7 @@ func GetPropertyStruct(o *Object, name string, timeout int) *Property {
 		panic(fmt.Sprintf("No parent for %v", o.Id))
 	}
 	parent := parentProp.Value
-	log.Printf("Searching %v, then parent %v\n", fmt.Sprintf("%v", o.Id), parent)
+	//log.Printf("Searching %v, then parent %v\n", fmt.Sprintf("%v", o.Id), parent)
 	//Object points to itself, time to quit
 	if parent == fmt.Sprintf("%v", o.Id) {
 		return nil
@@ -200,7 +200,7 @@ func GetVerbStruct(o *Object, name string, timeout int) *Property {
 		return &val
 	}
 
-	log.Printf("Searching %v, then parent %v\n", fmt.Sprintf("%v", o.Id), parent)
+	//log.Printf("Searching %v, then parent %v\n", fmt.Sprintf("%v", o.Id), parent)
 	//Object points to itself, time to quit
 	if parent == fmt.Sprintf("%v", o.Id) {
 		return nil
