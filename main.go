@@ -45,6 +45,10 @@ func Tell(from, target, message string) {
 	log.Println("Message queued")
 }
 
+func Msg(from, target, verb, arg1 string) {
+	Q <- &Message{from, target, verb, arg1}
+}
+
 type Property struct {
 	Value       string
 	Owner       string
