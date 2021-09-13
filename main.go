@@ -54,6 +54,7 @@ type Property struct {
 	Debug       bool
 	ChangeOwner bool
 	Verb        bool
+	Throff      bool
 }
 
 type Object struct {
