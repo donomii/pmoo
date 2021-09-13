@@ -107,7 +107,7 @@ func SaveObject(o *Object) {
 }
 
 func LoadObject(id string) *Object {
-	log.Println("Loading " + "objects/" + id + ".json")
+	//log.Println("Loading " + "objects/" + id + ".json")
 	file, err := ioutil.ReadFile("objects/" + id + ".json")
 	if err != nil {
 		return nil
