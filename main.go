@@ -87,10 +87,21 @@ func VisibleObjects(player *Object) []string {
 }
 
 func FormatObject(id string) string {
-	txt, err := json.MarshalIndent(LoadObject(id), "", " ")
-	panicErr(err)
-	return string(txt)
+	o := LoadObject(id)
+	out := fmt.Sprintf("Object %v, %v\nVerbs\n-----\n", id, GetProp(o, "name"))
+	var verbs, props []string
+	for k, v := range o.Properties {
+		if v.Verb {
+			verbs = append(verbs, k)
+		} else {
+			props = append(props, k)
+		}
+		out = out + strings.Join(verbs, ",") + "\n\nProperties\n----------\n" + strings.Join(props, ",") + "\n"
+	}
+
+	return out
 }
+
 func DumpObject(id string) {
 	fmt.Println(FormatObject(id))
 }
@@ -107,6 +118,8 @@ func SaveObject(o *Object) {
 }
 
 func LoadObject(id string) *Object {
+	n_id := strocnv.Atoi(id)
+	id = ToStr(n_id)
 	//log.Println("Loading " + "objects/" + id + ".json")
 	file, err := ioutil.ReadFile("objects/" + id + ".json")
 	if err != nil {
