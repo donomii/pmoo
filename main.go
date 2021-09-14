@@ -92,7 +92,7 @@ func FormatObject(id string) string {
 	o := LoadObject(id)
 	out := fmt.Sprintf("%v", o)
 	loc := GetProp(id, "location")
-	out = fmt.Sprintf("Object %v, %v at %v\nVerbs\n-----\n", id, GetProp(ToStr(o.Id), "name"), GetProp(loc, "name"))
+	out = out + fmt.Sprintf("Object %v, %v at %v\nVerbs\n-----\n", id, GetProp(ToStr(o.Id), "name"), GetProp(loc, "name"))
 	o = LoadObject(id)
 	var verbs, props []string
 	for k, v := range o.Properties {
