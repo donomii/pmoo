@@ -19,10 +19,11 @@ import (
 )
 
 type Message struct {
-	Player string
-	Target string
-	Verb   string
-	Data   string
+	Player                                                    string
+	This                                                      string
+	Verb                                                      string
+	Dobj, Dpropstr, Prepstr, Iobj, Ipropstr, Dobjstr, Iobjstr string
+	Data                                                      string
 }
 
 var Q chan *Message
@@ -33,14 +34,15 @@ func SetQ(queue chan *Message) {
 
 }
 
-func Tell(from, target, message string) {
-	log.Printf(" queueing Message to %v", Q)
-	Q <- &Message{from, target, "tell", message}
-	log.Println("Message queued")
+func InputMsg(from, target, verb, arg1 string) {
+	m := &Message{Player: from, This: target, Verb: verb, Data: arg1}
+	log.Printf("**********Queueing Message %v to %v\n", m, Q)
+	Q <- m
+	log.Println("**************Message queued")
 }
 
-func Msg(from, target, verb, arg1 string) {
-	m := &Message{Player: from, Target: target, Verb: verb, Data: arg1}
+func Msg(from, target, verb, dobjstr, prep, iobjstr string) {
+	m := &Message{Player: from, This: target, Verb: verb, Dobjstr: dobjstr, Prepstr: prep, Iobjstr: iobjstr}
 	log.Printf("**********Queueing Message %v to %v\n", m, Q)
 	Q <- m
 	log.Println("**************Message queued")
@@ -100,6 +102,7 @@ func FormatObject(id string) string {
 
 	}
 	out = out + strings.Join(verbs, ",") + "\n\nProperties\n----------\n" + strings.Join(props, ",") + "\n"
+	out = out + fmt.Sprintf("%v", o)
 	return out
 }
 
@@ -133,6 +136,8 @@ func LoadObject(id string) *Object {
 	if err != nil {
 		return nil
 	}
+
+	fmt.Printf("%+v\n", data)
 	return &data
 }
 
@@ -366,8 +371,8 @@ func main() {runme()}`
 	}
 }
 
-func CallVerb(obj, player, this, verb, dobjstr, dpropstr, prepositionStr, iobjstr, ipropstr string) {
-	defs := BuildDefinitions(player, this, verb, dobjstr, dpropstr, prepositionStr, iobjstr, ipropstr)
+func CallVerb(obj, player, this, verb, dobj, dpropstr, prepositionStr, iobj, ipropstr, dobjstr, iobjstr string) {
+	defs := BuildDefinitions(player, this, verb, dobj, dpropstr, prepositionStr, iobj, ipropstr, dobjstr, iobjstr)
 	i := NewInterpreter()
 	i.Eval(`		
 	import . "github.com/donomii/pmoo"
@@ -463,7 +468,7 @@ func LexLine(editorCmd string) ([]string, error) {
 	return args, nil
 }
 
-func BuildDefinitions(player, this, verb, dobjstr, dpropstr, prepositionStr, iobjstr, ipropstr string) string {
+func BuildDefinitions(player, this, verb, dobj, dpropstr, prepositionStr, iobj, ipropstr, dobjstr, iobjstr string) string {
 	definitions := ` 
 
 	player := LoadObject("` + player + `")  //an object, the player who typed the command` + `
@@ -475,11 +480,11 @@ func BuildDefinitions(player, this, verb, dobjstr, dpropstr, prepositionStr, iob
 	//args a list of strings, the words in argstr
 	dobjstr := "` + dobjstr + `"` + ` //a string, the direct object string found during parsing
 	dpropstr := "` + dpropstr + `"` + ` //a string, the direct object property string found during parsing
-	dobj := LoadObject("` + dobjstr + `")  //an object, the direct object value found during matching
+	dobj := LoadObject("` + dobj + `")  //an object, the direct object value found during matching
 	prepstr:= "` + prepositionStr + `" //a string, the prepositional phrase found during parsing
 	iobjstr := "` + iobjstr + `" //a string, the indirect object string
 	ipropstr := "` + ipropstr + `" //a string, the indirect object string
-	iobj := LoadObject("` + iobjstr + `")  //an object, the indirect object value
+	iobj := LoadObject("` + iobj + `")  //an object, the indirect object value
 
 `
 	return definitions
