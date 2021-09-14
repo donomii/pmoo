@@ -90,9 +90,9 @@ func VisibleObjects(player *Object) []string {
 
 func FormatObject(id string) string {
 	o := LoadObject(id)
-	out := fmt.Sprintf("%v", o)
+	var out string
 	loc := GetProp(id, "location")
-	out = out + fmt.Sprintf("Object %v, %v at %v\nVerbs\n-----\n", id, GetProp(ToStr(o.Id), "name"), GetProp(loc, "name"))
+	out = out + fmt.Sprintf("\n\nObject %v, %v at %v\nVerbs\n-----\n", id, GetProp(ToStr(o.Id), "name"), GetProp(loc, "name"))
 	o = LoadObject(id)
 	var verbs, props []string
 	for k, v := range o.Properties {
@@ -104,7 +104,10 @@ func FormatObject(id string) string {
 
 	}
 	out = out + strings.Join(verbs, ",") + "\n\nProperties\n----------\n" + strings.Join(props, ",") + "\n"
-
+	out = out + "Definitions\n-----------\n"
+	for k, v := range o.Properties {
+		out = out + fmt.Sprintf("%v: %v\n", k, v)
+	}
 	return out
 }
 
