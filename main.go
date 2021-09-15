@@ -43,9 +43,13 @@ func InputMsg(from, target, verb, arg1 string) {
 
 func Msg(from, target, verb, dobjstr, prep, iobjstr string) {
 	m := &Message{Player: from, This: target, Verb: verb, Dobjstr: dobjstr, Prepstr: prep, Iobjstr: iobjstr}
-	log.Printf("**********Queueing Message %v to %v\n", m, Q)
 	Q <- m
-	log.Println("**************Message queued")
+	log.Printf("Audit: Message %v\n", m)
+}
+
+func RawMsg(m Message) {
+	Q <- &m
+	log.Printf("Audit: Message %v\n", m)
 }
 
 type Property struct {
