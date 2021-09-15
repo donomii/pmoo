@@ -24,6 +24,8 @@ type Message struct {
 	Verb                                                      string
 	Dobj, Dpropstr, Prepstr, Iobj, Ipropstr, Dobjstr, Iobjstr string
 	Data                                                      string
+	From                                                      string
+	Trace                                                     string
 }
 
 var Q chan *Message
