@@ -133,17 +133,24 @@ func SaveObject(o *Object) {
 	panicErr(err)
 	if Cluster {
 		cli, err := etcd.New(etcd.Config{
-			Endpoints:   []string{"localhost:2379", "localhost:22379", "localhost:32379"},
+			Endpoints:   []string{"localhost:2379"},
 			DialTimeout: 5 * time.Second,
 		})
+		if err != nil {
+			log.Println("ERROR while storing key", o.Id)
+
+			panic(err)
+		}
+		defer cli.Close()
 		var resp *etcd.PutResponse
 		log.Printf("Storing key %v\n", ToStr(o.Id))
 		resp, err = cli.Put(context.TODO(), ToStr(o.Id), string(txt))
 		if err != nil {
-			log.Println(resp)
-			panic(err)
+			log.Println("ERROR while storing key", o.Id)
+			//log.Println(resp)
+			log.Println(err)
 		}
-		defer cli.Close()
+
 	} else {
 		os.Mkdir("objects", 0777)
 
@@ -157,7 +164,7 @@ func LoadObject(id string) *Object {
 	if Cluster {
 		var resp *etcd.GetResponse
 		cli, err := etcd.New(etcd.Config{
-			Endpoints:   []string{"localhost:2379", "localhost:22379", "localhost:32379"},
+			Endpoints:   []string{"localhost:2379"},
 			DialTimeout: 5 * time.Second,
 		})
 		resp, err = cli.Get(context.TODO(), id)
