@@ -230,7 +230,7 @@ func GetPropertyStruct(o *Object, name string, timeout int) *Property {
 	parentProp, ok := o.Properties["parent"]
 	if !ok {
 		//All objects must have a parent
-		panic(fmt.Sprintf("No parent for %v when looking for property %v in %v", o.Id, name, in o.Id))
+		panic(fmt.Sprintf("No parent for %v when looking for property %v in %v", o.Id, name, o.Id))
 	}
 	parent := parentProp.Value
 	//log.Printf("Searching %v, then parent %v\n", fmt.Sprintf("%v", o.Id), parent)
