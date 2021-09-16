@@ -159,7 +159,8 @@ func LoadObject(id string) *Object {
 		})
 		resp, err = cli.Get(context.TODO(), id)
 		if err != nil {
-			// handle error!
+			log.Println(err)
+			return nil
 		}
 		defer cli.Close()
 
