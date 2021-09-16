@@ -137,6 +137,7 @@ func SaveObject(o *Object) {
 			DialTimeout: 5 * time.Second,
 		})
 		var resp *etcd.PutResponse
+		log.Printf("Storing key %v\n", ToStr(o.Id))
 		resp, err = cli.Put(context.TODO(), ToStr(o.Id), string(txt))
 		if err != nil {
 			log.Println(resp)
