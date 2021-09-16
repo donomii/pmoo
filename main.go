@@ -272,7 +272,7 @@ func GetVerbStruct(o *Object, name string, timeout int) *Property {
 	parentProp, ok := o.Properties["parent"]
 	if !ok {
 		//All objects must have a parent
-		panic(fmt.Sprintf("No parent for %v", o.Id))
+		panic(fmt.Sprintf("No parent for %v when looking for verb %v in %v", o.Id, name, o.Id))
 	}
 	parent := parentProp.Value
 
