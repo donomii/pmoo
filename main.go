@@ -170,23 +170,23 @@ func LoadObject(id string) *Object {
 		resp, err = cli.Get(context.TODO(), id)
 		if err != nil {
 			log.Println(err)
-			return &Object{Properties: make(map[string]Property)}
+			return nil
 		}
 		defer cli.Close()
 
 		for _, ev := range resp.Kvs {
 			//log.Printf("%s : %s\n", ev.Key, ev.Value)
 
-			data := Object{Properties: make(map[string]Property)}
+			data := Object{}
 
 			err = json.Unmarshal([]byte(ev.Value), &data)
 			if err != nil {
-				continue
+				return nil
 			}
 
 			return &data
 		}
-		return &Object{Properties: make(map[string]Property)}
+		return nil
 	} else {
 		n_id, _ := strconv.Atoi(id)
 		id = ToStr(n_id)
@@ -230,7 +230,7 @@ func GetPropertyStruct(o *Object, name string, timeout int) *Property {
 	parentProp, ok := o.Properties["parent"]
 	if !ok {
 		//All objects must have a parent
-		panic(fmt.Sprintf("No parent for %v", o.Id))
+		panic(fmt.Sprintf("No parent for %v when looking for property %v in %v", o.Id, name, in o.Id))
 	}
 	parent := parentProp.Value
 	//log.Printf("Searching %v, then parent %v\n", fmt.Sprintf("%v", o.Id), parent)
