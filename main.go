@@ -343,6 +343,7 @@ func SetVerbStruct(o *Object, name, value string) {
 	if prop == nil {
 		prop = &Property{Verb: true}
 	}
+	prop.Verb = true
 	p := *prop
 	p.Value = value
 	o.Properties[name] = p
