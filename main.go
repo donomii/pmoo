@@ -181,7 +181,7 @@ func LoadObject(id string) *Object {
 
 			err = json.Unmarshal([]byte(ev.Value), &data)
 			if err != nil {
-				return nil
+				continue
 			}
 
 			return &data
