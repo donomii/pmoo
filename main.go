@@ -319,6 +319,7 @@ func CloneObject(o *Object) *Object {
 
 	out.Id = GetFreshId()
 	SaveObject(&out)
+	log.Println("Audit: Cloned ", o.Id)
 	return &out
 }
 
