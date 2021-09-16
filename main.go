@@ -21,7 +21,7 @@ import (
 	etcd "go.etcd.io/etcd/client/v3"
 )
 
-var cluster bool
+var Cluster bool
 
 type Message struct {
 	Player                                                    string
@@ -131,7 +131,7 @@ func L(s interface{}) {
 func SaveObject(o *Object) {
 	txt, err := json.MarshalIndent(o, "", " ")
 	panicErr(err)
-	if cluster {
+	if Cluster {
 		cli, err := etcd.New(etcd.Config{
 			Endpoints:   []string{"localhost:2379", "localhost:22379", "localhost:32379"},
 			DialTimeout: 5 * time.Second,
@@ -151,7 +151,7 @@ func SaveObject(o *Object) {
 }
 
 func LoadObject(id string) *Object {
-	if cluster {
+	if Cluster {
 		var resp *etcd.GetResponse
 		cli, err := etcd.New(etcd.Config{
 			Endpoints:   []string{"localhost:2379", "localhost:22379", "localhost:32379"},
