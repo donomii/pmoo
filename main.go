@@ -177,7 +177,7 @@ func LoadObject(id string) *Object {
 		for _, ev := range resp.Kvs {
 			//log.Printf("%s : %s\n", ev.Key, ev.Value)
 
-			data := Object{}
+			data := Object{Properties: make(map[string]Property)}
 
 			err = json.Unmarshal([]byte(ev.Value), &data)
 			if err != nil {
