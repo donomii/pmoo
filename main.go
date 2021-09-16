@@ -136,9 +136,11 @@ func SaveObject(o *Object) {
 			Endpoints:   []string{"localhost:2379", "localhost:22379", "localhost:32379"},
 			DialTimeout: 5 * time.Second,
 		})
-		_, err = cli.Put(context.TODO(), ToStr(o.Id), string(txt))
+		var resp *etcd.PutResponse
+		resp, err = cli.Put(context.TODO(), ToStr(o.Id), string(txt))
 		if err != nil {
-			// handle error!
+			log.Println(resp)
+			panic(err)
 		}
 		defer cli.Close()
 	} else {
