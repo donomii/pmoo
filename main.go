@@ -136,7 +136,7 @@ func SaveObject(o *Object) {
 			Endpoints:   []string{"localhost:2379", "localhost:22379", "localhost:32379"},
 			DialTimeout: 5 * time.Second,
 		})
-		_, err = cli.Put(context.TODO(), ToStr(o.Id), txt)
+		_, err = cli.Put(context.TODO(), ToStr(o.Id), string(txt))
 		if err != nil {
 			// handle error!
 		}
@@ -152,7 +152,7 @@ func SaveObject(o *Object) {
 
 func LoadObject(id string) *Object {
 	if cluster {
-		var respBytes []byte
+		var respBytes *etcd.GetResponse
 		cli, err := etcd.New(etcd.Config{
 			Endpoints:   []string{"localhost:2379", "localhost:22379", "localhost:32379"},
 			DialTimeout: 5 * time.Second,
