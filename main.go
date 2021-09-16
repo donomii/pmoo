@@ -142,9 +142,9 @@ func SaveObject(o *Object) {
 			panic(err)
 		}
 		defer cli.Close()
-		var resp *etcd.PutResponse
+		//var resp *etcd.PutResponse
 		log.Printf("Storing key %v\n", ToStr(o.Id))
-		resp, err = cli.Put(context.TODO(), ToStr(o.Id), string(txt))
+		_, err = cli.Put(context.TODO(), ToStr(o.Id), string(txt))
 		if err != nil {
 			log.Println("ERROR while storing key", o.Id)
 			//log.Println(resp)
