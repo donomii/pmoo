@@ -170,7 +170,7 @@ func LoadObject(id string) *Object {
 		resp, err = cli.Get(context.TODO(), id)
 		if err != nil {
 			log.Println(err)
-			return nil
+			return &Object{Properties: make(map[string]Property)}
 		}
 		defer cli.Close()
 
