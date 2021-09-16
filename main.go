@@ -1,6 +1,7 @@
 package pmoo
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -10,13 +11,17 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/traefik/yaegi/interp"
 	"github.com/traefik/yaegi/stdlib"
 	"github.com/traefik/yaegi/stdlib/syscall"
 	"github.com/traefik/yaegi/stdlib/unrestricted"
 	"github.com/traefik/yaegi/stdlib/unsafe"
+	etcd "go.etcd.io/etcd/client/v3"
 )
+
+var cluster bool
 
 type Message struct {
 	Player                                                    string
@@ -124,32 +129,66 @@ func L(s interface{}) {
 	log.Println(s)
 }
 func SaveObject(o *Object) {
-
-	os.Mkdir("objects", 0777)
 	txt, err := json.MarshalIndent(o, "", " ")
 	panicErr(err)
-	err = ioutil.WriteFile(fmt.Sprintf("objects/%v.json", o.Id), txt, 0600)
-	panicErr(err)
+	if cluster {
+		cli, err := etcd.New(etcd.Config{
+			Endpoints:   []string{"localhost:2379", "localhost:22379", "localhost:32379"},
+			DialTimeout: 5 * time.Second,
+		})
+		_, err = cli.Put(context.TODO(), ToStr(o.Id), txt)
+		if err != nil {
+			// handle error!
+		}
+		defer cli.Close()
+	} else {
+		os.Mkdir("objects", 0777)
+
+		err = ioutil.WriteFile(fmt.Sprintf("objects/%v.json", o.Id), txt, 0600)
+		panicErr(err)
+	}
+
 }
 
 func LoadObject(id string) *Object {
-	n_id, _ := strconv.Atoi(id)
-	id = ToStr(n_id)
-	//log.Println("Loading " + "objects/" + id + ".json")
-	file, err := ioutil.ReadFile("objects/" + id + ".json")
-	if err != nil {
-		return nil
+	if cluster {
+		var respBytes []byte
+		cli, err := etcd.New(etcd.Config{
+			Endpoints:   []string{"localhost:2379", "localhost:22379", "localhost:32379"},
+			DialTimeout: 5 * time.Second,
+		})
+		respBytes, err = cli.Get(context.TODO(), id)
+		if err != nil {
+			// handle error!
+		}
+		defer cli.Close()
+		data := Object{}
+
+		err = json.Unmarshal([]byte(respBytes), &data)
+		if err != nil {
+			return nil
+		}
+
+		return &data
+	} else {
+		n_id, _ := strconv.Atoi(id)
+		id = ToStr(n_id)
+		//log.Println("Loading " + "objects/" + id + ".json")
+		file, err := ioutil.ReadFile("objects/" + id + ".json")
+		if err != nil {
+			return nil
+		}
+
+		data := Object{}
+
+		err = json.Unmarshal([]byte(file), &data)
+		if err != nil {
+			return nil
+		}
+
+		//fmt.Printf("%+v\n", data)
+		return &data
 	}
-
-	data := Object{}
-
-	err = json.Unmarshal([]byte(file), &data)
-	if err != nil {
-		return nil
-	}
-
-	//fmt.Printf("%+v\n", data)
-	return &data
 }
 
 //Fixme copied
