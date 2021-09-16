@@ -152,24 +152,29 @@ func SaveObject(o *Object) {
 
 func LoadObject(id string) *Object {
 	if cluster {
-		var respBytes *etcd.GetResponse
+		var resp *etcd.GetResponse
 		cli, err := etcd.New(etcd.Config{
 			Endpoints:   []string{"localhost:2379", "localhost:22379", "localhost:32379"},
 			DialTimeout: 5 * time.Second,
 		})
-		respBytes, err = cli.Get(context.TODO(), id)
+		resp, err = cli.Get(context.TODO(), id)
 		if err != nil {
 			// handle error!
 		}
 		defer cli.Close()
-		data := Object{}
 
-		err = json.Unmarshal([]byte(respBytes), &data)
-		if err != nil {
-			return nil
+		for _, ev := range resp.Kvs {
+			log.Printf("%s : %s\n", ev.Key, ev.Value)
+
+			data := Object{}
+
+			err = json.Unmarshal([]byte(ev.Value), &data)
+			if err != nil {
+				return nil
+			}
+
+			return &data
 		}
-
-		return &data
 	} else {
 		n_id, _ := strconv.Atoi(id)
 		id = ToStr(n_id)
