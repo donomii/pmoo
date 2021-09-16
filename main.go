@@ -175,6 +175,7 @@ func LoadObject(id string) *Object {
 
 			return &data
 		}
+		return nil
 	} else {
 		n_id, _ := strconv.Atoi(id)
 		id = ToStr(n_id)
