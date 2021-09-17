@@ -20,7 +20,7 @@ func Receiver(url string, callback func([]byte)) {
 	}
 }
 
-func Message(url string, mess interface{}) {
+func myQMessage(url string, mess interface{}) {
 	json, _ := json.Marshal(mess)
 	Send(url, json)
 }
