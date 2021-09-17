@@ -1,7 +1,6 @@
 package pmoo
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -11,23 +10,26 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/traefik/yaegi/interp"
 	"github.com/traefik/yaegi/stdlib"
 	"github.com/traefik/yaegi/stdlib/syscall"
 	"github.com/traefik/yaegi/stdlib/unrestricted"
 	"github.com/traefik/yaegi/stdlib/unsafe"
-	etcd "go.etcd.io/etcd/client/v3"
 )
 
 var Cluster bool
 var ClusterQueue bool
+var QueueServer string
 
 var EtcdServers []string //= []string{"localhost:2379"}
 
 func SetEtcdServers(s []string) {
 	EtcdServers = s
+}
+
+func SetQueueServer(s string) {
+	QueueServer = s
 }
 
 type Message struct {
@@ -139,25 +141,7 @@ func SaveObject(o *Object) {
 	txt, err := json.MarshalIndent(o, "", " ")
 	panicErr(err)
 	if Cluster {
-		cli, err := etcd.New(etcd.Config{
-			Endpoints:   EtcdServers,
-			DialTimeout: 5 * time.Second,
-		})
-		if err != nil {
-			log.Println("ERROR while storing key", o.Id)
-
-			panic(err)
-		}
-		defer cli.Close()
-		//var resp *etcd.PutResponse
-		log.Printf("etcd: storing key %v\n", ToStr(o.Id))
-		resp, err := cli.Put(context.TODO(), ToStr(o.Id), string(txt))
-		if err != nil {
-			log.Println("ERROR while storing key", o.Id)
-			//log.Println(resp)
-			log.Println(err)
-		}
-		log.Println(resp)
+		myQ.SaveObject(id, o)
 
 	} else {
 		os.Mkdir("objects", 0777)
@@ -170,29 +154,7 @@ func SaveObject(o *Object) {
 
 func LoadObject(id string) *Object {
 	if Cluster {
-		var resp *etcd.GetResponse
-		cli, err := etcd.New(etcd.Config{
-			Endpoints:   EtcdServers,
-			DialTimeout: 5 * time.Second,
-		})
-		log.Println("etcd:  Loading key", id)
-		resp, err = cli.Get(context.TODO(), id)
-		if err != nil {
-			log.Println(err)
-			return nil
-		}
-		defer cli.Close()
-		var data *Object
-		for _, ev := range resp.Kvs {
-			//log.Printf("%s : %s\n", ev.Key, ev.Value)
-
-			err = json.Unmarshal([]byte(ev.Value), &data)
-			if err != nil {
-				return nil
-			}
-
-		}
-		return data
+		return myQ.LoadObject(QueueServer, id)
 
 	} else {
 		n_id, _ := strconv.Atoi(id)
