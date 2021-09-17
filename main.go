@@ -560,7 +560,7 @@ func VerbSearch(o *Object, aName string) (*Object, *Property) {
 	loc := LoadObject(locId)
 	roomContents := SplitStringList(GetPropertyStruct(loc, "contains", 10).Value)
 	playerContents := SplitStringList(GetPropertyStruct(o, "contains", 10).Value)
-	contains := append([]string{toStr(o.Id), locId}, roomContents...)
+	contains := append([]string{ToStr(o.Id), locId}, roomContents...)
 	contains = append(contains, playerContents...)
 	for _, objId := range contains {
 		obj := LoadObject(objId)
@@ -580,7 +580,7 @@ func NameSearch(o *Object, aName string) (*Object, *Property) {
 	locId := GetPropertyStruct(o, "location", 10).Value
 	loc := LoadObject(locId)
 	contains := SplitStringList(GetPropertyStruct(loc, "contains", 10).Value)
-	contains = append([]string{locId, toStr(o.Id)}, contains...)
+	contains = append([]string{locId, ToStr(o.Id)}, contains...)
 	for _, objId := range contains {
 		obj := LoadObject(objId)
 		nameProp := GetPropertyStruct(obj, "name", 10)
@@ -634,7 +634,7 @@ func ParseDo(s string, objId string) (string, string) {
 	//It might be the name of an object somewhere close
 	foundObjId, _ := NameSearch(LoadObject(objId), s)
 	if foundObjId != nil {
-		return toStr(foundObjId.Id), ""
+		return ToStr(foundObjId.Id), ""
 	}
 
 	return "", ""
