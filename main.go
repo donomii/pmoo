@@ -150,7 +150,7 @@ func SaveObject(o *Object) {
 		}
 		defer cli.Close()
 		//var resp *etcd.PutResponse
-		log.Printf("Setcd: storing key %v\n", ToStr(o.Id))
+		log.Printf("etcd: storing key %v\n", ToStr(o.Id))
 		resp, err := cli.Put(context.TODO(), ToStr(o.Id), string(txt))
 		if err != nil {
 			log.Println("ERROR while storing key", o.Id)
@@ -184,7 +184,7 @@ func LoadObject(id string) *Object {
 		defer cli.Close()
 		var data *Object
 		for _, ev := range resp.Kvs {
-			log.Printf("%s : %s\n", ev.Key, ev.Value)
+			//log.Printf("%s : %s\n", ev.Key, ev.Value)
 
 			err = json.Unmarshal([]byte(ev.Value), &data)
 			if err != nil {
