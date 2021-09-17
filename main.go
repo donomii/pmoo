@@ -23,7 +23,7 @@ import (
 
 var Cluster bool
 
-var EtcdServers []string = []string{"localhost:2379"}
+var EtcdServers []string //= []string{"localhost:2379"}
 
 type Message struct {
 	Player                                                    string
