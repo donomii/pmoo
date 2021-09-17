@@ -141,7 +141,7 @@ func SaveObject(o *Object) {
 	txt, err := json.MarshalIndent(o, "", " ")
 	panicErr(err)
 	if Cluster {
-		StoreObject(QueueServer, ToStr(id), o)
+		StoreObject(QueueServer, ToStr(o.Id), o)
 
 	} else {
 		os.Mkdir("objects", 0777)
