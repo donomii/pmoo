@@ -23,6 +23,8 @@ import (
 
 var Cluster bool
 
+var EtcdServers []string{"localhost:2379"}
+
 type Message struct {
 	Player                                                    string
 	This                                                      string
@@ -133,7 +135,7 @@ func SaveObject(o *Object) {
 	panicErr(err)
 	if Cluster {
 		cli, err := etcd.New(etcd.Config{
-			Endpoints:   []string{"localhost:2379"},
+			Endpoints:   EtcdServers,
 			DialTimeout: 5 * time.Second,
 		})
 		if err != nil {
@@ -164,7 +166,7 @@ func LoadObject(id string) *Object {
 	if Cluster {
 		var resp *etcd.GetResponse
 		cli, err := etcd.New(etcd.Config{
-			Endpoints:   []string{"localhost:2379"},
+			Endpoints:   EtcdServers,
 			DialTimeout: 5 * time.Second,
 		})
 		resp, err = cli.Get(context.TODO(), id)
@@ -308,9 +310,9 @@ func GetFreshId() int {
 	root.Properties["lastId"] = *lastId
 	SaveObject(root)
 	return id
-
 }
 
+//Copy a loaded MOO object.  Saves the copy before returning
 func CloneObject(o *Object) *Object {
 	out := *o
 	name := out.Properties["name"]
@@ -323,12 +325,14 @@ func CloneObject(o *Object) *Object {
 	return &out
 }
 
+//Create a copy of a MOO object
 func Clone(objstr string) string {
 	sourceO := LoadObject(objstr)
 	newO := CloneObject(sourceO)
 	return ToStr(newO.Id)
 }
 
+//Set a property on a loaded object
 func SetProperty(o *Object, name, value string) {
 	log.Printf("Setting property %v on object %v to %v\n", name, o.Id, value)
 	prop := GetPropertyStruct(o, name, 10)
@@ -340,6 +344,8 @@ func SetProperty(o *Object, name, value string) {
 	o.Properties[name] = p
 	SaveObject(o)
 }
+
+//Set a property on an object
 func SetProp(objstr, name, value string) {
 	log.Printf("Setting prop %v on object %v to %v\n", name, objstr, value)
 	o := LoadObject(objstr)
@@ -546,4 +552,145 @@ func BuildDefinitions(player, this, verb, dobj, dpropstr, prepositionStr, iobj, 
 
 `
 	return definitions
+}
+
+func VerbSearch(o *Object, aName string) (*Object, *Property) {
+
+	locId := GetPropertyStruct(o, "location", 10).Value
+	loc := LoadObject(locId)
+	roomContents := SplitStringList(GetPropertyStruct(loc, "contains", 10).Value)
+	playerContents := SplitStringList(GetPropertyStruct(o, "contains", 10).Value)
+	contains := append([]string{toStr(o.Id), locId}, roomContents...)
+	contains = append(contains, playerContents...)
+	for _, objId := range contains {
+		obj := LoadObject(objId)
+		nameProp := GetVerbStruct(obj, aName, 10)
+		if nameProp != nil {
+			return obj, nameProp
+		}
+	}
+
+	log.Printf("Failed to find verb %v here!\n", aName)
+	return nil, nil
+
+}
+
+func NameSearch(o *Object, aName string) (*Object, *Property) {
+
+	locId := GetPropertyStruct(o, "location", 10).Value
+	loc := LoadObject(locId)
+	contains := SplitStringList(GetPropertyStruct(loc, "contains", 10).Value)
+	contains = append([]string{locId, toStr(o.Id)}, contains...)
+	for _, objId := range contains {
+		obj := LoadObject(objId)
+		nameProp := GetPropertyStruct(obj, "name", 10)
+		if nameProp != nil {
+			if nameProp.Value == aName {
+				return obj, nameProp
+			}
+		}
+	}
+
+	log.Printf("Failed to find object %v here!\n", aName)
+	return nil, nil
+
+}
+
+func ParseDo(s string, objId string) (string, string) {
+	if s == "me" {
+		return objId, ""
+	}
+	if s == "here" {
+		return GetPropertyStruct(LoadObject(objId), "location", 10).Value, ""
+	}
+
+	//It's a generic object, look for it in the properties of #1
+	if len(s) > 0 && s[0] == '$' {
+		prop := s[1:]
+		one := LoadObject("1")
+		oneprop := GetPropertyStruct(one, prop, 10)
+		if oneprop == nil {
+			fmt.Printf("Could not find special property %v on 1\n", prop)
+		}
+		objstr := oneprop.Value
+		return objstr, ""
+	}
+
+	//It's an object number
+	if len(s) > 0 && s[0] == '#' {
+		s = s[1:]
+		log.Println("Splitting", s, "on", ".")
+		ss := strings.Split(s, ".")
+		ss = append(ss, "no property")
+		if ss[0] == "me" {
+			return objId, ss[1]
+		}
+		if ss[0] == "here" {
+			return GetPropertyStruct(LoadObject(objId), "location", 10).Value, ss[1]
+		}
+		return ss[0], ss[1]
+	}
+
+	//It might be the name of an object somewhere close
+	foundObjId, _ := NameSearch(LoadObject(objId), s)
+	if foundObjId != nil {
+		return toStr(foundObjId.Id), ""
+	}
+
+	return "", ""
+}
+func Find(a []string, x string) int {
+	for i, n := range a {
+		if x == n {
+			return i
+		}
+	}
+	return -1
+}
+
+func FindPreposition(words []string) int {
+	preps := strings.Split("named that is with using at to in front of in inside into on top of on onto upon out of from inside from over through under underneath beneath behind beside for about is as off off of", " ")
+	for _, p := range preps {
+		//log.Println("Searching for ", p, "in", words)
+		r := Find(words, p)
+		if r > -1 {
+			return r
+		}
+	}
+	return -1
+}
+
+func BreakSentence(s string) (string, string, string, string) {
+	x, _ := LexLine(s)
+	log.Printf("Parsed line into %v", strings.Join(x, ":"))
+	if len(x) == 0 {
+		return "", "", "", ""
+	}
+	if len(x) == 1 {
+		return s, "", "", ""
+	}
+	if len(x) == 2 {
+		return x[0], x[1], "", ""
+	}
+	verb := x[0]
+	x = x[1:]
+	preppos := FindPreposition(x)
+	if preppos < 0 {
+		return verb, strings.Join(x, " "), "", ""
+	}
+
+	do := x[:preppos]
+	prep := x[preppos]
+	io := x[preppos+1:]
+
+	return verb, strings.Join(do, " "), prep, strings.Join(io, " ")
+
+}
+func SetThroffVerb(obj, name, code string) {
+	log.Println("SetThroffVerb: ", obj, name, code)
+	o := LoadObject(obj)
+	v := Property{Value: code, Verb: true, Throff: true}
+	log.Println("object:", o)
+	o.Properties[name] = v
+	SaveObject(o)
 }
