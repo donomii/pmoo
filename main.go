@@ -173,10 +173,11 @@ func LoadObject(id string) *Object {
 	if Cluster {
 		var resp *etcd.GetResponse
 		if cli == nil {
-		cli, err = etcd.New(etcd.Config{
-			Endpoints:   EtcdServers,
-			DialTimeout: 5 * time.Second,
-		})
+			cli, err = etcd.New(etcd.Config{
+				Endpoints:   EtcdServers,
+				DialTimeout: 5 * time.Second,
+			})
+		}
 		log.Println("etcd:  Loading key", id)
 		resp, err = cli.Get(context.TODO(), id)
 		if err != nil {
