@@ -149,13 +149,14 @@ func SaveObject(o *Object) {
 		}
 		defer cli.Close()
 		//var resp *etcd.PutResponse
-		log.Printf("Setcd: toring key %v\n", ToStr(o.Id))
-		_, err = cli.Put(context.TODO(), ToStr(o.Id), string(txt))
+		log.Printf("Setcd: storing key %v\n", ToStr(o.Id))
+		resp, err = cli.Put(context.TODO(), ToStr(o.Id), string(txt))
 		if err != nil {
 			log.Println("ERROR while storing key", o.Id)
 			//log.Println(resp)
 			log.Println(err)
 		}
+		log.Println(resp)
 
 	} else {
 		os.Mkdir("objects", 0777)
