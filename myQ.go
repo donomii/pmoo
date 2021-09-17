@@ -6,8 +6,6 @@ import (
 	"io/ioutil"
 
 	"net/http"
-
-	"github.com/donomii/pmoo"
 )
 
 func Receiver(url string, callback func([]byte)) {
@@ -31,19 +29,19 @@ func Send(url string, data []byte) {
 	http.Post(url+"/publish/main", "who/cares", bytes.NewReader(data))
 }
 
-func StoreObject(url, id string, m pmoo.Object) {
+func StoreObject(url, id string, m Object) {
 	b, _ := json.Marshal(m)
 	http.Post(url+"/store/"+id, "who/cares", bytes.NewReader(b))
 }
 
-func FetchObject(url, id string) *pmoo.Object {
+func FetchObject(url, id string) *Object {
 	resp, err := http.Get(url + "/subscribe/main")
 	if err != nil {
 		//log.Fatalln(err)
 	}
 	data, _ := ioutil.ReadAll(resp.Body)
 
-	retrievedVal := new(pmoo.Object)
+	retrievedVal := new(Object)
 	json.Unmarshal(data, retrievedVal)
 	return retrievedVal
 }
