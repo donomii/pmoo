@@ -1,4 +1,4 @@
-package myQ
+package pmoo
 
 import (
 	"bytes"
@@ -36,7 +36,7 @@ func StoreObject(url, id string, m pmoo.Object) {
 	http.Post(url+"/store/"+id, "who/cares", bytes.NewReader(b))
 }
 
-func LoadObject(url, id string) *pmoo.Object {
+func FetchObject(url, id string) *pmoo.Object {
 	resp, err := http.Get(url + "/subscribe/main")
 	if err != nil {
 		//log.Fatalln(err)

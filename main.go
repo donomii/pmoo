@@ -155,7 +155,7 @@ func SaveObject(o *Object) {
 
 func LoadObject(id string) *Object {
 	if Cluster {
-		return myQ.LoadObject(QueueServer, id)
+		return myQ.FetchObject(QueueServer, id)
 
 	} else {
 		n_id, _ := strconv.Atoi(id)
