@@ -186,7 +186,8 @@ func LoadObject(id string) *Object {
 		}
 		var data *Object
 		for _, ev := range resp.Kvs {
-			log.Printf("%s : %s\n", ev.Key, ev.Value)
+
+			log.Printf("%s : %s (version %v)\n", ev.Key, ev.Value, ev.Version)
 
 			err = json.Unmarshal([]byte(ev.Value), &data)
 			if err != nil {
