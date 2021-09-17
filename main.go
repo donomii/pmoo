@@ -24,7 +24,6 @@ import (
 var Cluster bool
 
 var EtcdServers []string //= []string{"localhost:2379"}
-var cli *etcd.Client
 
 func SetEtcdServers(s []string) {
 	EtcdServers = s
@@ -139,17 +138,16 @@ func SaveObject(o *Object) {
 	txt, err := json.MarshalIndent(o, "", " ")
 	panicErr(err)
 	if Cluster {
-		if cli == nil {
-			cli, err = etcd.New(etcd.Config{
-				Endpoints:   EtcdServers,
-				DialTimeout: 5 * time.Second,
-			})
-		}
+		cli, err := etcd.New(etcd.Config{
+			Endpoints:   EtcdServers,
+			DialTimeout: 5 * time.Second,
+		})
 		if err != nil {
 			log.Println("ERROR while storing key", o.Id)
 
 			panic(err)
 		}
+		defer cli.Close()
 		//var resp *etcd.PutResponse
 		log.Printf("Setcd: toring key %v\n", ToStr(o.Id))
 		_, err = cli.Put(context.TODO(), ToStr(o.Id), string(txt))
@@ -169,26 +167,22 @@ func SaveObject(o *Object) {
 }
 
 func LoadObject(id string) *Object {
-	var err error
 	if Cluster {
 		var resp *etcd.GetResponse
-		if cli == nil {
-			cli, err = etcd.New(etcd.Config{
-				Endpoints:   EtcdServers,
-				DialTimeout: 5 * time.Second,
-			})
-		}
+		cli, err := etcd.New(etcd.Config{
+			Endpoints:   EtcdServers,
+			DialTimeout: 5 * time.Second,
+		})
 		log.Println("etcd:  Loading key", id)
 		resp, err = cli.Get(context.TODO(), id)
 		if err != nil {
 			log.Println(err)
 			return nil
 		}
+		defer cli.Close()
 		var data *Object
 		for _, ev := range resp.Kvs {
-
-			//log.Printf("%s : %s (version %v)\n", ev.Key, ev.Value, ev.Version)
-			log.Printf("(version %v)\n", ev.Version)
+			log.Printf("%s : %s\n", ev.Key, ev.Value)
 
 			err = json.Unmarshal([]byte(ev.Value), &data)
 			if err != nil {
