@@ -190,7 +190,7 @@ func LoadObject(id string) *Object {
 			}
 
 		}
-		return &data
+		return data
 
 	} else {
 		n_id, _ := strconv.Atoi(id)
