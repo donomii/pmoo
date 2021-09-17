@@ -29,7 +29,7 @@ func Send(url string, data []byte) {
 	http.Post(url+"/publish/main", "who/cares", bytes.NewReader(data))
 }
 
-func StoreObject(url, id string, m Object) {
+func StoreObject(url, id string, m *Object) {
 	b, _ := json.Marshal(m)
 	http.Post(url+"/store/"+id, "who/cares", bytes.NewReader(b))
 }
