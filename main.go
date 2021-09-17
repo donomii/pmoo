@@ -25,6 +25,10 @@ var Cluster bool
 
 var EtcdServers []string //= []string{"localhost:2379"}
 
+func SetEtcdServers(s []string) {
+	EtcdServers = s
+}
+
 type Message struct {
 	Player                                                    string
 	This                                                      string
