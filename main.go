@@ -149,7 +149,7 @@ func SaveObject(o *Object) {
 		}
 		defer cli.Close()
 		//var resp *etcd.PutResponse
-		log.Printf("Storing key %v\n", ToStr(o.Id))
+		log.Printf("Setcd: toring key %v\n", ToStr(o.Id))
 		_, err = cli.Put(context.TODO(), ToStr(o.Id), string(txt))
 		if err != nil {
 			log.Println("ERROR while storing key", o.Id)
@@ -173,6 +173,7 @@ func LoadObject(id string) *Object {
 			Endpoints:   EtcdServers,
 			DialTimeout: 5 * time.Second,
 		})
+		log.Println("etcd:  Loading key", id)
 		resp, err = cli.Get(context.TODO(), id)
 		if err != nil {
 			log.Println(err)
