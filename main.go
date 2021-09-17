@@ -40,6 +40,7 @@ type Message struct {
 	Data                                                      string
 	From                                                      string
 	Trace                                                     string
+	Affinity                                                  string
 }
 
 var Q chan *Message
