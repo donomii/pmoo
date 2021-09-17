@@ -22,6 +22,7 @@ import (
 )
 
 var Cluster bool
+var ClusterQueue bool
 
 var EtcdServers []string //= []string{"localhost:2379"}
 
