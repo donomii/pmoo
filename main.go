@@ -182,7 +182,7 @@ func LoadObject(id string) *Object {
 		defer cli.Close()
 
 		for _, ev := range resp.Kvs {
-			//log.Printf("%s : %s\n", ev.Key, ev.Value)
+			log.Printf("%s : %s\n", ev.Key, ev.Value)
 
 			data := Object{}
 
