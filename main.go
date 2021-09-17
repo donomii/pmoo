@@ -141,7 +141,7 @@ func SaveObject(o *Object) {
 	txt, err := json.MarshalIndent(o, "", " ")
 	panicErr(err)
 	if Cluster {
-		myQ.SaveObject(id, o)
+		SaveObject(id, o)
 
 	} else {
 		os.Mkdir("objects", 0777)
@@ -154,7 +154,7 @@ func SaveObject(o *Object) {
 
 func LoadObject(id string) *Object {
 	if Cluster {
-		return myQ.FetchObject(QueueServer, id)
+		return FetchObject(QueueServer, id)
 
 	} else {
 		n_id, _ := strconv.Atoi(id)
