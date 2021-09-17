@@ -180,20 +180,18 @@ func LoadObject(id string) *Object {
 			return nil
 		}
 		defer cli.Close()
-
+		var data *Object
 		for _, ev := range resp.Kvs {
 			log.Printf("%s : %s\n", ev.Key, ev.Value)
-
-			data := Object{}
 
 			err = json.Unmarshal([]byte(ev.Value), &data)
 			if err != nil {
 				return nil
 			}
 
-			return &data
 		}
-		return nil
+		return &data
+
 	} else {
 		n_id, _ := strconv.Atoi(id)
 		id = ToStr(n_id)
