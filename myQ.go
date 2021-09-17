@@ -35,7 +35,7 @@ func StoreObject(url, id string, m *Object) {
 }
 
 func FetchObject(url, id string) *Object {
-	resp, err := http.Get(url + "/subscribe/main")
+	resp, err := http.Get(url + "/fetch/main")
 	if err != nil {
 		//log.Fatalln(err)
 	}
