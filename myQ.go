@@ -40,6 +40,9 @@ func FetchObject(url, id string) *Object {
 		return nil
 		//log.Fatalln(err)
 	}
+	if resp.StatusCode > 299 {
+		return nil
+	}
 	data, _ := ioutil.ReadAll(resp.Body)
 
 	retrievedVal := new(Object)
