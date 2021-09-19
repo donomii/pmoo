@@ -566,6 +566,9 @@ func NameSearch(o *Object, aName string) (*Object, *Property) {
 }
 
 func ParseDo(s string, objId string) (string, string) {
+	if objId == "" {
+		return "", ""
+	}
 	if s == "me" {
 		return objId, ""
 	}
