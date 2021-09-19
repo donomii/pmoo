@@ -603,10 +603,14 @@ func ParseDo(s string, objId string) (string, string) {
 		return ss[0], ss[1]
 	}
 
+	//Note that only the object has to exist.  The property might not have been created yet
 	ss := strings.Split(s, ".")
 	//It might be the name of an object somewhere close
 	foundObj, _ := NameSearch(LoadObject(objId), ss[0])
 	if foundObj != nil {
+		if len(ss) > 1 {
+			return ToStr(foundObj.Id), ss[1]
+		}
 		return ToStr(foundObj.Id), ""
 	}
 
