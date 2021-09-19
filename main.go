@@ -609,10 +609,10 @@ func ParseDo(s string, playerId string) (string, string) {
 	//Note that only the object has to exist.  The property might not have been created yet
 	ss := strings.Split(s, ".")
 	if ss[0] == "me" {
-		ss[0] = playerId
+		return playerId, ss[1]
 	}
 	if ss[0] == "here" {
-		ss[0] = GetPropertyStruct(LoadObject(playerId), "location", 10).Value
+		return GetPropertyStruct(LoadObject(playerId), "location", 10).Value, ss[1]
 	}
 	//It might be the name of an object somewhere close
 	log.Printf("Namesearch for %v in %v\n", ss[0], playerId)
