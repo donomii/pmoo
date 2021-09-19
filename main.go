@@ -41,6 +41,7 @@ type Message struct {
 	From                                                      string
 	Trace                                                     string
 	Affinity                                                  string
+	Args                                                      []string
 }
 
 var Q chan *Message
