@@ -565,7 +565,7 @@ func NameSearch(o *Object, aName string) (*Object, *Property) {
 
 }
 
-func ParseDo(s string, objId string) (string, string) {
+func ParseDo(s string, objId, player string) (string, string) {
 	if objId == "" {
 		return "", ""
 	}
@@ -595,7 +595,7 @@ func ParseDo(s string, objId string) (string, string) {
 		ss := strings.Split(s, ".")
 		ss = append(ss, "")
 		if ss[0] == "me" {
-			return objId, ss[1]
+			return player, ss[1]
 		}
 		if ss[0] == "here" {
 			return GetPropertyStruct(LoadObject(objId), "location", 10).Value, ss[1]
@@ -605,6 +605,12 @@ func ParseDo(s string, objId string) (string, string) {
 
 	//Note that only the object has to exist.  The property might not have been created yet
 	ss := strings.Split(s, ".")
+	if ss[0] == "me" {
+		ss[0] = player
+	}
+	if ss[0] == "here" {
+		ss[0] = GetPropertyStruct(LoadObject(objId), "location", 10).Value
+	}
 	//It might be the name of an object somewhere close
 	foundObj, _ := NameSearch(LoadObject(objId), ss[0])
 	if foundObj != nil {
