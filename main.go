@@ -607,7 +607,7 @@ func ParseDo(s string, objId string) (string, string) {
 	foundObj, prop := NameSearch(LoadObject(objId), s)
 	if foundObj != nil {
 		if prop != nil {
-		return ToStr(foundObj.Id), ToStr(prop.Value))
+			return ToStr(foundObj.Id), ToStr(prop.Value)
 		}
 		return ToStr(foundObj.Id), ""
 	}
