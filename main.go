@@ -188,7 +188,7 @@ func GetPropertyStruct(o *Object, name string, timeout int) *Property {
 	if o == nil {
 		return nil
 	}
-
+	log.Printf("Searching %v\n", fmt.Sprintf("%v", o.Id))
 	val, ok := o.Properties[name]
 	if ok {
 		if val.Verb {
