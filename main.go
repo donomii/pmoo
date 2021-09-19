@@ -318,6 +318,9 @@ func SetProperty(o *Object, name, value string) {
 func SetProp(objstr, name, value string) {
 	log.Printf("Setting prop %v on object %v to %v\n", name, objstr, value)
 	o := LoadObject(objstr)
+	if o == nil {
+		log.Printf("Object '%v' not found!\n", objstr)
+	}
 	SetProperty(o, name, value)
 }
 
