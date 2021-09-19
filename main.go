@@ -565,15 +565,15 @@ func NameSearch(o *Object, aName string) (*Object, *Property) {
 
 }
 
-func ParseDo(s string, objId, player string) (string, string) {
-	if objId == "" {
+func ParseDo(s string, playerId string) (string, string) {
+	if playerId == "" {
 		return "", ""
 	}
 	if s == "me" {
-		return objId, ""
+		return playerId, ""
 	}
 	if s == "here" {
-		return GetPropertyStruct(LoadObject(objId), "location", 10).Value, ""
+		return GetPropertyStruct(LoadObject(playerId), "location", 10).Value, ""
 	}
 
 	//It's a generic object, look for it in the properties of #1
@@ -595,10 +595,10 @@ func ParseDo(s string, objId, player string) (string, string) {
 		ss := strings.Split(s, ".")
 		ss = append(ss, "")
 		if ss[0] == "me" {
-			return player, ss[1]
+			return playerId, ss[1]
 		}
 		if ss[0] == "here" {
-			return GetPropertyStruct(LoadObject(objId), "location", 10).Value, ss[1]
+			return GetPropertyStruct(LoadObject(playerId), "location", 10).Value, ss[1]
 		}
 		return ss[0], ss[1]
 	}
@@ -609,10 +609,10 @@ func ParseDo(s string, objId, player string) (string, string) {
 		ss[0] = player
 	}
 	if ss[0] == "here" {
-		ss[0] = GetPropertyStruct(LoadObject(objId), "location", 10).Value
+		ss[0] = GetPropertyStruct(LoadObject(playerId), "location", 10).Value
 	}
 	//It might be the name of an object somewhere close
-	foundObj, _ := NameSearch(LoadObject(objId), ss[0])
+	foundObj, _ := NameSearch(LoadObject(playerId), ss[0])
 	if foundObj != nil {
 		if len(ss) > 1 {
 			return ToStr(foundObj.Id), ss[1]
