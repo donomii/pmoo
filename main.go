@@ -615,6 +615,7 @@ func ParseDo(s string, playerId string) (string, string) {
 		ss[0] = GetPropertyStruct(LoadObject(playerId), "location", 10).Value
 	}
 	//It might be the name of an object somewhere close
+	log.Printf("Namesearch for %v in %v\n", ss[0], playerId)
 	foundObj, _ := NameSearch(LoadObject(playerId), ss[0])
 	if foundObj != nil {
 		if len(ss) > 1 {
