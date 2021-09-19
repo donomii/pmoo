@@ -606,7 +606,7 @@ func ParseDo(s string, playerId string) (string, string) {
 	//Note that only the object has to exist.  The property might not have been created yet
 	ss := strings.Split(s, ".")
 	if ss[0] == "me" {
-		ss[0] = player
+		ss[0] = playerId
 	}
 	if ss[0] == "here" {
 		ss[0] = GetPropertyStruct(LoadObject(playerId), "location", 10).Value
