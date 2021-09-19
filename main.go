@@ -603,12 +603,10 @@ func ParseDo(s string, objId string) (string, string) {
 		return ss[0], ss[1]
 	}
 
+	ss := strings.Split(s, ".")
 	//It might be the name of an object somewhere close
-	foundObj, prop := NameSearch(LoadObject(objId), s)
+	foundObj, _ := NameSearch(LoadObject(objId), ss)
 	if foundObj != nil {
-		if prop != nil {
-			return ToStr(foundObj.Id), ToStr(prop.Value)
-		}
 		return ToStr(foundObj.Id), ""
 	}
 
