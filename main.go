@@ -593,7 +593,7 @@ func ParseDo(s string, objId string) (string, string) {
 		s = s[1:]
 		log.Println("Splitting", s, "on", ".")
 		ss := strings.Split(s, ".")
-		ss = append(ss, "no property")
+		ss = append(ss, "")
 		if ss[0] == "me" {
 			return objId, ss[1]
 		}
@@ -604,9 +604,12 @@ func ParseDo(s string, objId string) (string, string) {
 	}
 
 	//It might be the name of an object somewhere close
-	foundObjId, _ := NameSearch(LoadObject(objId), s)
-	if foundObjId != nil {
-		return ToStr(foundObjId.Id), ""
+	foundObj, prop := NameSearch(LoadObject(objId), s)
+	if foundObj != nil {
+		if prop != nil {
+		return ToStr(foundObj.Id), ToStr(prop.Value))
+		}
+		return ToStr(foundObj.Id), ""
 	}
 
 	return "", ""
