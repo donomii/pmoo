@@ -49,6 +49,14 @@ func FetchObject(url, id string) *Object {
 	json.Unmarshal(data, retrievedVal)
 	return retrievedVal
 }
+func DatabaseConnection(url, id string) bool {
+	resp, err := http.Get(url + "/operational")
+	if err != nil {
+		return false
+		//log.Fatalln(err)
+	}
+	return resp.StatusCode < 299
+}
 
 /*
 func DeleteObject(id string) {

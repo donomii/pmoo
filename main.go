@@ -10,6 +10,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/traefik/yaegi/interp"
 	"github.com/traefik/yaegi/stdlib"
@@ -72,14 +73,9 @@ func RawMsg(m Message) {
 
 type Property struct {
 	Value       string
-	Owner       string
-	Read        bool
-	Write       bool
-	Execute     bool
-	Debug       bool
-	ChangeOwner bool
 	Verb        bool
 	Throff      bool
+	Interpreter string
 }
 
 type Object struct {
@@ -143,19 +139,25 @@ func SaveObject(o *Object) {
 	txt, err := json.MarshalIndent(o, "", " ")
 	panicErr(err)
 	if Cluster {
+		for !DatabaseConnection() {
+			log.Println("Lost connection to database, retrying")
+			time.Sleep(time.Second)
+		}
 		StoreObject(QueueServer, ToStr(o.Id), o)
-
 	} else {
 		os.Mkdir("objects", 0777)
 
 		err = ioutil.WriteFile(fmt.Sprintf("objects/%v.json", o.Id), txt, 0600)
 		panicErr(err)
 	}
-
 }
 
 func LoadObject(id string) *Object {
 	if Cluster {
+		for !DatabaseConnection() {
+			log.Println("Lost connection to database, retrying")
+			time.Sleep(time.Second)
+		}
 		return FetchObject(QueueServer, id)
 
 	} else {
