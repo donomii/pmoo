@@ -140,7 +140,7 @@ func SaveObject(o *Object) {
 	panicErr(err)
 	if Cluster {
 		for !DatabaseConnection(QueueServer) {
-			log.Println("Lost connection to database, retrying")
+			log.Println("Lost connection to database at ", QueueServer, ", retrying")
 			time.Sleep(time.Second)
 		}
 		StoreObject(QueueServer, ToStr(o.Id), o)
@@ -155,7 +155,7 @@ func SaveObject(o *Object) {
 func LoadObject(id string) *Object {
 	if Cluster {
 		for !DatabaseConnection(QueueServer) {
-			log.Println("Lost connection to database, retrying")
+			log.Println("Lost connection to database ", QueueServer, ", retrying")
 			time.Sleep(time.Second)
 		}
 		return FetchObject(QueueServer, id)
