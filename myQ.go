@@ -49,7 +49,7 @@ func FetchObject(url, id string) *Object {
 	json.Unmarshal(data, retrievedVal)
 	return retrievedVal
 }
-func DatabaseConnection() bool {
+func DatabaseConnection(url string) bool {
 	resp, err := http.Get(url + "/operational")
 	if err != nil {
 		return false
