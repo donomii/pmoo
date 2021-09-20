@@ -28,7 +28,7 @@ func MyQMessage(url string, mess interface{}) {
 func Send(url string, data []byte) {
 	resp, err := http.Post(url+"/publish/main", "who/cares", bytes.NewReader(data))
 	if err != nil {
-		return nil
+		return 
 		//log.Fatalln(err)
 	}
 	defer resp.Body.Close()
