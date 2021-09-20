@@ -159,7 +159,6 @@ func LoadObject(id string) *Object {
 			time.Sleep(time.Second)
 		}
 		return FetchObject(QueueServer, id)
-
 	} else {
 		n_id, _ := strconv.Atoi(id)
 		id = ToStr(n_id)

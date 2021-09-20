@@ -26,12 +26,22 @@ func MyQMessage(url string, mess interface{}) {
 }
 
 func Send(url string, data []byte) {
-	http.Post(url+"/publish/main", "who/cares", bytes.NewReader(data))
+	resp, err := http.Post(url+"/publish/main", "who/cares", bytes.NewReader(data))
+	if err != nil {
+		return nil
+		//log.Fatalln(err)
+	}
+	defer resp.Body.Close()
 }
 
 func StoreObject(url, id string, m *Object) {
 	b, _ := json.Marshal(m)
-	http.Post(url+"/store/"+id, "who/cares", bytes.NewReader(b))
+	resp, err := http.Post(url+"/store/"+id, "who/cares", bytes.NewReader(b))
+	if err != nil {
+		return nil
+		//log.Fatalln(err)
+	}
+	defer resp.Body.Close()
 }
 
 func FetchObject(url, id string) *Object {
@@ -56,6 +66,7 @@ func DatabaseConnection(url string) bool {
 		return false
 		//log.Fatalln(err)
 	}
+	defer resp.Body.Close()
 	return resp.StatusCode < 299
 }
 
