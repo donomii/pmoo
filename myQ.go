@@ -40,6 +40,7 @@ func FetchObject(url, id string) *Object {
 		return nil
 		//log.Fatalln(err)
 	}
+	defer resp.Body.Close()
 	if resp.StatusCode > 299 {
 		return nil
 	}
@@ -49,7 +50,7 @@ func FetchObject(url, id string) *Object {
 	json.Unmarshal(data, retrievedVal)
 	return retrievedVal
 }
-func DatabaseConnection(url string	) bool {
+func DatabaseConnection(url string) bool {
 	resp, err := http.Get(url + "/operational")
 	if err != nil {
 		return false
