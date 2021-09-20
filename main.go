@@ -139,7 +139,7 @@ func SaveObject(o *Object) {
 	txt, err := json.MarshalIndent(o, "", " ")
 	panicErr(err)
 	if Cluster {
-		for !DatabaseConnection() {
+		for !DatabaseConnection(QueueServer) {
 			log.Println("Lost connection to database, retrying")
 			time.Sleep(time.Second)
 		}
@@ -154,7 +154,7 @@ func SaveObject(o *Object) {
 
 func LoadObject(id string) *Object {
 	if Cluster {
-		for !DatabaseConnection() {
+		for !DatabaseConnection(QueueServer) {
 			log.Println("Lost connection to database, retrying")
 			time.Sleep(time.Second)
 		}
