@@ -28,7 +28,7 @@ func MyQMessage(url string, mess interface{}) {
 func Send(url string, data []byte) {
 	resp, err := http.Post(url+"/publish/main", "who/cares", bytes.NewReader(data))
 	if err != nil {
-		return 
+		return
 		//log.Fatalln(err)
 	}
 	defer resp.Body.Close()
@@ -38,7 +38,7 @@ func StoreObject(url, id string, m *Object) {
 	b, _ := json.Marshal(m)
 	resp, err := http.Post(url+"/store/"+id, "who/cares", bytes.NewReader(b))
 	if err != nil {
-		return nil
+		return
 		//log.Fatalln(err)
 	}
 	defer resp.Body.Close()
