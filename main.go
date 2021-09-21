@@ -546,7 +546,23 @@ func VerbSearch(o *Object, aName string) (*Object, *Property) {
 
 	log.Printf("Failed to find verb %v here!\n", aName)
 	return nil, nil
+}
 
+func VerbList(o *Object) []string {
+	out := []string{}
+	locId := GetPropertyStruct(o, "location", 10).Value
+	loc := LoadObject(locId)
+	roomContents := SplitStringList(GetPropertyStruct(loc, "contains", 10).Value)
+	playerContents := SplitStringList(GetPropertyStruct(o, "contains", 10).Value)
+	contains := append([]string{ToStr(o.Id), locId}, roomContents...)
+	contains = append(contains, playerContents...)
+	for _, objId := range contains {
+		obj := LoadObject(objId)
+		nameProp := GetVerbStruct(obj, aName, 10)
+		out = append(out, nameProp.Value)
+	}
+
+	return out
 }
 
 func NameSearch(o *Object, aName string) (*Object, *Property) {
