@@ -558,8 +558,11 @@ func VerbList(o *Object) []string {
 	contains = append(contains, playerContents...)
 	for _, objId := range contains {
 		obj := LoadObject(objId)
-		nameProp := GetVerbStruct(obj, aName, 10)
-		out = append(out, nameProp.Value)
+		for nameProp := range obj.Properties {
+			if nameProp.Verb {
+				out = append(out, nameProp.Value)
+			}
+		}
 	}
 
 	return out
