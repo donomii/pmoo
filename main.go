@@ -548,7 +548,8 @@ func VerbSearch(o *Object, aName string) (*Object, *Property) {
 	return nil, nil
 }
 
-func VerbList(o *Object) []string {
+func VerbList(player string) []string {
+	o := LoadObject(player)
 	out := []string{}
 	locId := GetPropertyStruct(o, "location", 10).Value
 	loc := LoadObject(locId)
