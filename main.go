@@ -560,9 +560,9 @@ func VerbList(player string) []string {
 	for _, objId := range contains {
 		obj := LoadObject(objId)
 		for name, s := range obj.Properties {
-			if s.Verb {
-				out = append(out, name)
-			}
+			//if s.Verb {
+			out = append(out, name)
+			//}
 		}
 	}
 
