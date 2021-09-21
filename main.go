@@ -560,7 +560,7 @@ func VerbList(o *Object) []string {
 		obj := LoadObject(objId)
 		for name, s := range obj.Properties {
 			if s.Verb {
-				out = append(out, nameProp)
+				out = append(out, name)
 			}
 		}
 	}
