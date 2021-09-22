@@ -19,6 +19,7 @@ import (
 	"github.com/traefik/yaegi/stdlib/unsafe"
 )
 
+var DefaultTicks = 1000
 var Cluster bool
 var ClusterQueue bool
 var QueueServer string
@@ -43,6 +44,7 @@ type Message struct {
 	Trace                                                     string
 	Affinity                                                  string
 	Args                                                      []string
+	Ticks                                                     int
 }
 
 var Q chan *Message
@@ -54,14 +56,14 @@ func SetQ(queue chan *Message) {
 }
 
 func InputMsg(from, target, verb, arg1 string) {
-	m := &Message{Player: from, This: target, Verb: verb, Data: arg1}
+	m := &Message{Player: from, This: target, Verb: verb, Data: arg1, Ticks: DefaultTicks}
 	log.Printf("**********Queueing Message %v to %v\n", m, Q)
 	Q <- m
 	log.Println("**************Message queued")
 }
 
 func Msg(from, target, verb, dobjstr, prep, iobjstr string) {
-	m := &Message{Player: from, This: target, Verb: verb, Dobjstr: dobjstr, Prepstr: prep, Iobjstr: iobjstr}
+	m := &Message{Player: from, This: target, Verb: verb, Dobjstr: dobjstr, Prepstr: prep, Iobjstr: iobjstr, Ticks: DefaultTicks}
 	Q <- m
 	log.Printf("Audit: Message %v\n", m)
 }
