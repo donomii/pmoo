@@ -604,7 +604,11 @@ func NameSearch(o *Object, aName string) (*Object, *Property) {
 }
 
 func ParseDo(s string, playerId string) (string, string) {
+	log.Println("Parsing", s)
 	if playerId == "" {
+		return "", ""
+	}
+	if s == "" {
 		return "", ""
 	}
 	if s == "me" {
@@ -650,7 +654,7 @@ func ParseDo(s string, playerId string) (string, string) {
 		return GetPropertyStruct(LoadObject(playerId), "location", 10).Value, ss[1]
 	}
 	//It might be the name of an object somewhere close
-	log.Printf("Namesearch for %v in %v\n", ss[0], playerId)
+	log.Printf("Namesearch for '%v' in '%v'\n", ss[0], playerId)
 	foundObj, _ := NameSearch(LoadObject(playerId), ss[0])
 	if foundObj != nil {
 		if len(ss) > 1 {
