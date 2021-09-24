@@ -1,0 +1,126 @@
+{
+ "Properties": {
+  "contains": {
+   "Value": "",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "description": {
+   "Value": "System core",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "location": {
+   "Value": "7",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "name": {
+   "Value": "Core",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "owner": {
+   "Value": "7",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "parent": {
+   "Value": "7",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "player": {
+   "Value": "false",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "programmer": {
+   "Value": "false",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "read": {
+   "Value": "false",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "wizard": {
+   "Value": "false",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "write": {
+   "Value": "false",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  }
+ },
+ "Id": 7
+}

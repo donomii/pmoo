@@ -1,0 +1,148 @@
+{
+ "Properties": {
+  "contains": {
+   "Value": "",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "description": {
+   "Value": "You see nothing special.",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "go": {
+   "Value": " WHEN EQUAL dobjstr GetProp this ^name [ MoveObj player this ] ",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": true,
+   "Throff": true
+  },
+  "location": {
+   "Value": "4",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "look": {
+   "Value": "     *\u003e ITERATE [ +\u003e PRINTLN ( ^You ^see   GetProp o  ^name  ^here. )  +\u003e ARG o =\u003e ] +\u003e VisibleObjects player *\u003e PRINTLN GetProp this ^description *\u003e PRINTLN GetProp this ^name ",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": true,
+   "Throff": true
+  },
+  "name": {
+   "Value": "Generic Room",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "owner": {
+   "Value": "1",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "parent": {
+   "Value": "1",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "player": {
+   "Value": "false",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "programmer": {
+   "Value": "false",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "read": {
+   "Value": "true",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "wizard": {
+   "Value": "false",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "write": {
+   "Value": "false",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  }
+ },
+ "Id": 4
+}

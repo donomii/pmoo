@@ -1,0 +1,77 @@
+{
+ "Properties": {
+  "contains": {
+   "Value": "102",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "describe": {
+   "Value": " *\u003e Msg this player tell +\u003e GetProp dobj [ description ] ",
+   "Verb": true,
+   "Throff": true,
+   "Interpreter": ""
+  },
+  "description": {
+   "Value": "an old man with a scruffy beard, and a wizard's robe and hat",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "location": {
+   "Value": "3",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "name": {
+   "Value": "Wizard",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "owner": {
+   "Value": "1",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "parent": {
+   "Value": "5",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "player": {
+   "Value": "true",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "programmer": {
+   "Value": "true",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "read": {
+   "Value": "true",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "wizard": {
+   "Value": "true",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "write": {
+   "Value": "false",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  }
+ },
+ "Id": 2
+}

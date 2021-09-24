@@ -1,0 +1,71 @@
+{
+ "Properties": {
+  "contains": {
+   "Value": "",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "description": {
+   "Value": "small, grey and uninteresting",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "location": {
+   "Value": "6",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "name": {
+   "Value": "Generic thing",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "owner": {
+   "Value": "1",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "parent": {
+   "Value": "1",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "player": {
+   "Value": "false",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "programmer": {
+   "Value": "false",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "read": {
+   "Value": "false",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "wizard": {
+   "Value": "false",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "write": {
+   "Value": "false",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  }
+ },
+ "Id": 6
+}

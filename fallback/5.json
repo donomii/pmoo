@@ -1,0 +1,137 @@
+{
+ "Properties": {
+  "contains": {
+   "Value": "",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "description": {
+   "Value": "A wavering, indistinct figure",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "introduce": {
+   "Value": "PRINTLN ( [ Hello, my name is ] GetProp dobj   ^name )",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": true,
+   "Throff": true
+  },
+  "location": {
+   "Value": "5",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "name": {
+   "Value": "Generic player",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "owner": {
+   "Value": "1",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "parent": {
+   "Value": "1",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "player": {
+   "Value": "true",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "programmer": {
+   "Value": "false",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "read": {
+   "Value": "false",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "wizard": {
+   "Value": "false",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  },
+  "write": {
+   "Value": "false",
+   "Owner": "",
+   "Read": false,
+   "Write": false,
+   "Execute": false,
+   "Debug": false,
+   "ChangeOwner": false,
+   "Verb": false,
+   "Throff": false
+  }
+ },
+ "Id": 5
+}

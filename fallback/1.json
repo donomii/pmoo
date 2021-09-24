@@ -1,0 +1,197 @@
+{
+ "Properties": {
+  "clone": {
+   "Value": " SetProp o ^name iobjstr *\u003e SetProp o ^owner player *\u003e MoveObj o GetProp player ^location  *\u003e BIND o =\u003e Clone dobj ",
+   "Verb": true,
+   "Throff": true,
+   "Interpreter": ""
+  },
+  "contains": {
+   "Value": "",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "create": {
+   "Value": " SetProp o ^name iobjstr *\u003e SetProp o ^owner player *\u003e MoveObj o GetProp player ^location  *\u003e BIND o =\u003e Clone dobj ",
+   "Verb": true,
+   "Throff": true,
+   "Interpreter": ""
+  },
+  "debugParser": {
+   "Value": "  PRINTLN A[ ^player: player ]A PRINTLN A[ ^this: this ]A PRINTLN  A[ ^verb: verb ]A PRINTLN   A[ ^dobjstr: dobjstr ]A PRINTLN A[ ^dpropstr: dpropstr ]A PRINTLN  A[ ^prepstr: prepstr ]A  PRINTLN A[ ^iobjstr: iobjstr ]A   PRINTLN A[ ^ipropstr: ipropstr ]A PRINTLN [ ]  ",
+   "Verb": true,
+   "Throff": true,
+   "Interpreter": ""
+  },
+  "dig": {
+   "Value": " MoveObj exit GetProp player ^location *\u003e SetThroffVerb exit dobjstr verb *\u003e SetThroffVerb exit iobjstr verb *\u003e SetThroffVerb exit ^exit verb *\u003e BIND verb =\u003e GetVerb exit ^exit_verb *\u003e SetProp exit ^name dobjstr *\u003e SetProp exit ^exit_target newRoom *\u003e SetProp exit ^owner player *\u003e BIND exit =\u003e Clone 6 WHEN EQUAL iobj [] [ *\u003e SetProp newRoom  ^owner player *\u003e SetProp newRoom ^name  iobjstr ] *\u003e BIND newRoom =\u003e  IF EQUAL iobj [] [ Clone 4 ] iobj ",
+   "Verb": true,
+   "Throff": true,
+   "Interpreter": ""
+  },
+  "do_exit": {
+   "Value": "MoveObj player GetProp this ^exit_target",
+   "Verb": true,
+   "Throff": true,
+   "Interpreter": ""
+  },
+  "examine": {
+   "Value": "PRINTLN A[ FormatObject dobj ]A",
+   "Verb": true,
+   "Throff": true,
+   "Interpreter": ""
+  },
+  "exit_verb": {
+   "Value": "Msg player this ^do_exit [] [] [] ",
+   "Verb": true,
+   "Throff": true,
+   "Interpreter": ""
+  },
+  "findverb": {
+   "Value": "PRINTLN GetVerb iobjstr dobjstr",
+   "Verb": true,
+   "Throff": true,
+   "Interpreter": ""
+  },
+  "goscript": {
+   "Value": "SetVerb dobj dpropstr iobjstr",
+   "Verb": true,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "hello1": {
+   "Value": " PRINTLN [ HELLO WORLD ] ",
+   "Verb": true,
+   "Throff": true,
+   "Interpreter": ""
+  },
+  "lastId": {
+   "Value": "105",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "location": {
+   "Value": "0",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "move": {
+   "Value": " MoveObj dobj iobj ",
+   "Verb": true,
+   "Throff": true,
+   "Interpreter": ""
+  },
+  "name": {
+   "Value": "root",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "notify": {
+   "Value": " *\u003e IF EQUAL GetProp player ^prefix_notify ^true THEN [ *\u003e PRINTLN A[ GetProp player ^name ^: dobjstr ]A ] ELSE [ *\u003e PRINTLN dobjstr ] ",
+   "Verb": true,
+   "Throff": true,
+   "Interpreter": ""
+  },
+  "owner": {
+   "Value": "0",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "parent": {
+   "Value": "1",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "player": {
+   "Value": "5",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "programmer": {
+   "Value": "false",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "property": {
+   "Value": "SetProp dobj dpropstr iobjstr",
+   "Verb": true,
+   "Throff": true,
+   "Interpreter": ""
+  },
+  "read": {
+   "Value": "true",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "recycle": {
+   "Value": "MoveObj dobj 0",
+   "Verb": true,
+   "Throff": true,
+   "Interpreter": ""
+  },
+  "room": {
+   "Value": "4",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "shutdown": {
+   "Value": "EXIT 0",
+   "Verb": true,
+   "Throff": true,
+   "Interpreter": ""
+  },
+  "take": {
+   "Value": " MoveObj dobj player ",
+   "Verb": true,
+   "Throff": true,
+   "Interpreter": ""
+  },
+  "tell": {
+   "Value": " Msg this this ^notify  dobjstr [ ] [ ] ",
+   "Verb": true,
+   "Throff": true,
+   "Interpreter": ""
+  },
+  "thing": {
+   "Value": "6",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "verb": {
+   "Value": "SetThroffVerb dobj dpropstr iobjstr",
+   "Verb": true,
+   "Throff": true,
+   "Interpreter": ""
+  },
+  "whisper": {
+   "Value": " IF EQUAL  -\u003eSTRING  [ ]  -\u003eSTRING  dobj  [  Msg 7 player ^tell A[ [ You can't see ] dobjstr [ here ] ]A [ ] [ ]  ]  [ Msg this dobj ^tell  iobjstr [ ] [ ] ]    ",
+   "Verb": true,
+   "Throff": true,
+   "Interpreter": ""
+  },
+  "wizard": {
+   "Value": "false",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  },
+  "write": {
+   "Value": "false",
+   "Verb": false,
+   "Throff": false,
+   "Interpreter": ""
+  }
+ },
+ "Id": 1
+}
