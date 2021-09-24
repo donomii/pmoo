@@ -105,9 +105,9 @@ func VisibleObjects(player *Object) []string {
 
 	locId := GetPropertyStruct(player, "location", 10).Value
 	loc := LoadObject(locId)
-	contains := SplitStringList(GetPropertyStruct(loc, "contains", 10).Value)
-	contains = append([]string{locId}, contains...)
-	for _, objId := range contains {
+	contents := SplitStringList(GetPropertyStruct(loc, "contents", 10).Value)
+	contents = append([]string{locId}, contents...)
+	for _, objId := range contents {
 		out = append(out, objId)
 	}
 	return out
@@ -441,16 +441,16 @@ func MoveObj(objstr, targetstr string) {
 	log.Printf("Old location: %v", oldlocationstr)
 	oldloc := LoadObject(oldlocationstr)
 	log.Printf("Old location object: %v", oldloc)
-	oldcontainerstr := GetProp(oldlocationstr, "contains")
+	oldcontainerstr := GetProp(oldlocationstr, "contents")
 	newcontainerstr := RemoveFromStringList(oldcontainerstr, objstr)
 	log.Printf("New container string %v", newcontainerstr)
-	SetProp(oldlocationstr, "contains", newcontainerstr)
+	SetProp(oldlocationstr, "contents", newcontainerstr)
 
 	//Add to target container
-	oldtargetcontainerstr := GetProp(targetstr, "contains")
+	oldtargetcontainerstr := GetProp(targetstr, "contents")
 	newtargetcontainerstr := AddToStringList(oldtargetcontainerstr, objstr)
 	log.Printf("xtainer string %v", newtargetcontainerstr)
-	SetProp(targetstr, "contains", newtargetcontainerstr)
+	SetProp(targetstr, "contents", newtargetcontainerstr)
 
 	//Set the object's new location
 	SetProp(objstr, "location", targetstr)
@@ -545,11 +545,11 @@ func VerbSearch(o *Object, aName string) (*Object, *Property) {
 
 	locId := GetPropertyStruct(o, "location", 10).Value
 	loc := LoadObject(locId)
-	roomContents := SplitStringList(GetPropertyStruct(loc, "contains", 10).Value)
-	playerContents := SplitStringList(GetPropertyStruct(o, "contains", 10).Value)
-	contains := append([]string{ToStr(o.Id), locId}, roomContents...)
-	contains = append(contains, playerContents...)
-	for _, objId := range contains {
+	roomContents := SplitStringList(GetPropertyStruct(loc, "contents", 10).Value)
+	playerContents := SplitStringList(GetPropertyStruct(o, "contents", 10).Value)
+	contents := append([]string{ToStr(o.Id), locId}, roomContents...)
+	contents = append(contents, playerContents...)
+	for _, objId := range contents {
 		obj := LoadObject(objId)
 		nameProp := GetVerbStruct(obj, aName, 10)
 		if nameProp != nil {
@@ -580,11 +580,11 @@ func VerbList(player string) []string {
 	out := []string{}
 	locId := GetPropertyStruct(o, "location", 10).Value
 	loc := LoadObject(locId)
-	roomContents := SplitStringList(GetPropertyStruct(loc, "contains", 10).Value)
-	playerContents := SplitStringList(GetPropertyStruct(o, "contains", 10).Value)
-	contains := append([]string{ToStr(o.Id), locId}, roomContents...)
-	contains = append(contains, playerContents...)
-	for _, objId := range contains {
+	roomContents := SplitStringList(GetPropertyStruct(loc, "contents", 10).Value)
+	playerContents := SplitStringList(GetPropertyStruct(o, "contents", 10).Value)
+	contents := append([]string{ToStr(o.Id), locId}, roomContents...)
+	contents = append(contents, playerContents...)
+	for _, objId := range contents {
 		obj := LoadObject(objId)
 		for name, s := range obj.Properties {
 			if s.Verb {
@@ -600,9 +600,9 @@ func NameSearch(o *Object, aName string) (*Object, *Property) {
 
 	locId := GetPropertyStruct(o, "location", 10).Value
 	loc := LoadObject(locId)
-	contains := SplitStringList(GetPropertyStruct(loc, "contains", 10).Value)
-	contains = append([]string{locId, ToStr(o.Id)}, contains...)
-	for _, objId := range contains {
+	contents := SplitStringList(GetPropertyStruct(loc, "contents", 10).Value)
+	contents = append([]string{locId, ToStr(o.Id)}, contents...)
+	for _, objId := range contents {
 		obj := LoadObject(objId)
 		nameProp := GetPropertyStruct(obj, "name", 10)
 		if nameProp != nil {
