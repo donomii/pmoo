@@ -561,6 +561,20 @@ func VerbSearch(o *Object, aName string) (*Object, *Property) {
 	return nil, nil
 }
 
+func FindObjectByName(player, name string) {
+	lastIdStr := GetPropertyStruct(LoadObject("1"), "lastId", 1000)
+	lastId, err := strconv.Atoi(lastIdStr)
+	if err != nil {
+		panic(err)
+	}
+	for i := 0; i < lastId+1; i = i + 1 {
+		if GetProp(fmt.Sprintf("%v", i), "name") == name {
+			Msg("7", player, "tell", fmt.Sprintf("Found object #%v called %v", i, name), "", "")
+		}
+	}
+
+}
+
 func VerbList(player string) []string {
 	o := LoadObject(player)
 	out := []string{}
