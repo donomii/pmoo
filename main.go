@@ -604,7 +604,7 @@ func NameSearch(o *Object, aName string) (*Object, *Property) {
 }
 
 func ParseDo(s string, playerId string) (string, string) {
-	log.Println("Parsing", s)
+	log.Printf("Parsing '%v'\n", s)
 	if playerId == "" {
 		return "", ""
 	}
