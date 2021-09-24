@@ -175,7 +175,7 @@ func LoadObject(id string) *Object {
 		//log.Println("Loading " + "objects/" + id + ".json")
 		file, err := ioutil.ReadFile(name)
 		if err != nil {
-			file, err = fallback_objs.ReadFile(name)
+			file, err = fallback_objs.ReadFile("fallback/" + id + ".json")
 			if err != nil {
 				return nil
 			}
