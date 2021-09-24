@@ -562,7 +562,7 @@ func VerbSearch(o *Object, aName string) (*Object, *Property) {
 }
 
 func FindObjectByName(player, name string) {
-	lastIdStr := GetPropertyStruct(LoadObject("1"), "lastId", 1000)
+	lastIdStr := GetProp("1", "lastId")
 	lastId, err := strconv.Atoi(lastIdStr)
 	if err != nil {
 		panic(err)
