@@ -612,6 +612,10 @@ func ParseDo(s string, playerId string) (string, string) {
 	if s == "" {
 		return "", ""
 	}
+	if len(s) == 0 {
+		log.Println("WTF")
+		return "", ""
+	}
 	if s == "me" {
 		return playerId, ""
 	}
