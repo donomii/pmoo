@@ -1,6 +1,7 @@
 package pmoo
 
 import (
+	"embed"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -18,6 +19,10 @@ import (
 	"github.com/traefik/yaegi/stdlib/unrestricted"
 	"github.com/traefik/yaegi/stdlib/unsafe"
 )
+
+// content holds our static web server content.
+//go:embed fallback/*
+var fallback_objs embed.FS
 
 var DefaultTicks = 1000
 var Cluster bool
@@ -154,6 +159,8 @@ func SaveObject(o *Object) {
 	}
 }
 
+//First, try to load from disk
+//Then, attempt to load from the internal store.  Finally, fail.
 func LoadObject(id string) *Object {
 	if Cluster {
 		for !DatabaseConnection(QueueServer) {
@@ -162,12 +169,16 @@ func LoadObject(id string) *Object {
 		}
 		return FetchObject(QueueServer, id)
 	} else {
+		name := "objects/" + id + ".json"
 		n_id, _ := strconv.Atoi(id)
 		id = ToStr(n_id)
 		//log.Println("Loading " + "objects/" + id + ".json")
-		file, err := ioutil.ReadFile("objects/" + id + ".json")
+		file, err := ioutil.ReadFile(name)
 		if err != nil {
-			return nil
+			file, err = fallback_objs.ReadFile(name)
+			if err != nil {
+				return nil
+			}
 		}
 
 		data := Object{}
