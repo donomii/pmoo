@@ -601,11 +601,12 @@ func VerbList(player string) []string {
 	return out
 }
 
-func NameSearch(o *Object, aName string) (*Object, *Property) {
+func NameSearch(o *Object, aName, player string) (*Object, *Property) {
 
 	locId := GetPropertyStruct(o, "location", 10).Value
 	loc := LoadObject(locId)
 	contents := SplitStringList(GetPropertyStruct(loc, "contents", 10).Value)
+	playerContents := SplitStringList(GetPropertyStruct(player, "contents", 10).Value)
 	fmt.Println("Found contents", contents)
 	contents = append([]string{locId, ToStr(o.Id)}, contents...)
 	for _, objId := range contents {
