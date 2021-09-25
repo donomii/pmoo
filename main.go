@@ -28,6 +28,7 @@ var DefaultTicks = 1000
 var Cluster bool
 var ClusterQueue bool
 var QueueServer string
+var DataDir string = "objects"
 
 var EtcdServers []string //= []string{"localhost:2379"}
 
@@ -37,6 +38,10 @@ func SetEtcdServers(s []string) {
 
 func SetQueueServer(s string) {
 	QueueServer = s
+}
+
+func SetDataDir(s string) {
+	DataDir = s
 }
 
 type Message struct {
@@ -152,9 +157,9 @@ func SaveObject(o *Object) {
 		}
 		StoreObject(QueueServer, ToStr(o.Id), o)
 	} else {
-		os.Mkdir("objects", 0777)
+		os.Mkdir(DataDir, 0600)
 
-		err = ioutil.WriteFile(fmt.Sprintf("objects/%v.json", o.Id), txt, 0600)
+		err = ioutil.WriteFile(fmt.Sprintf(DataDir+"/%v.json", o.Id), txt, 0600)
 		panicErr(err)
 	}
 }
@@ -169,7 +174,7 @@ func LoadObject(id string) *Object {
 		}
 		return FetchObject(QueueServer, id)
 	} else {
-		name := "objects/" + id + ".json"
+		name := DataDir + "/" + id + ".json"
 		n_id, _ := strconv.Atoi(id)
 		id = ToStr(n_id)
 		//log.Println("Loading " + "objects/" + id + ".json")
