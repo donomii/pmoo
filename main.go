@@ -607,6 +607,7 @@ func NameSearch(o *Object, aName, player string) (*Object, *Property) {
 	loc := LoadObject(locId)
 	contents := SplitStringList(GetPropertyStruct(loc, "contents", 10).Value)
 	playerContents := SplitStringList(GetPropertyStruct(LoadObject(player), "contents", 10).Value)
+	contents = append(contents, playerContents...)
 	fmt.Println("Found contents", contents)
 	contents = append([]string{locId, ToStr(o.Id)}, contents...)
 	for _, objId := range contents {
