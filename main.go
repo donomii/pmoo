@@ -681,7 +681,7 @@ func ParseDo(s string, playerId string) (string, string) {
 	}
 	//It might be the name of an object somewhere close
 	log.Printf("Namesearch for '%v' in '%v'\n", ss[0], playerId)
-	foundObj, _ := NameSearch(LoadObject(playerId), ss[0])
+	foundObj, _ := NameSearch(LoadObject(playerId), ss[0], playerId)
 	if foundObj != nil {
 		if len(ss) > 1 {
 			return ToStr(foundObj.Id), ss[1]
