@@ -141,7 +141,10 @@ func FormatObject(id string) string {
 	out = out + strings.Join(verbs, ",") + "\n\nProperties\n----------\n" + strings.Join(props, ",") + "\n"
 	out = out + "\nDefinitions\n-----------\n"
 	for k, v := range o.Properties {
-		out = out + fmt.Sprintf("%v(%v,%v,%v): %v\n", k, FuckGo(v.Verb, "Verb", "Noun"), FuckGo(v.Throff, "Throff", "Other"), v.Interpreter, v.Value)
+		if v.Throff {
+			out = out + fmt.Sprintf("%v(Verb,Throff): %v\n", k, v.Value)	
+		}
+		out = out + fmt.Sprintf("%v(%v,%v,%v): %v\n", k, FuckGo(v.Verb, "Verb", "Noun"), v.Interpreter, v.Value)
 
 
 	}
