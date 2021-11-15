@@ -143,9 +143,9 @@ func FormatObject(id string) string {
 	for k, v := range o.Properties {
 		if v.Throff {
 			out = out + fmt.Sprintf("%v(Verb,Throff): %v\n", k, v.Value)	
+		}else {
+		out = out + fmt.Sprintf("%v(Noun): %v\n", k,  v.Value)
 		}
-		out = out + fmt.Sprintf("%v(%v,%v,%v): %v\n", k, FuckGo(v.Verb, "Verb", "Noun"), v.Interpreter, v.Value)
-
 
 	}
 	return out
@@ -187,7 +187,7 @@ func LoadObject(id string) *Object {
 		name := DataDir + "/" + id + ".json"
 		n_id, _ := strconv.Atoi(id)
 		id = ToStr(n_id)
-		//log.Println("Loading " + "objects/" + id + ".json")
+		log.Println("Loading " + name)
 		file, err := ioutil.ReadFile(name)
 		if err != nil {
 			file, err = fallback_objs.ReadFile("fallback/" + id + ".json")
