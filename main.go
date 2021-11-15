@@ -18,6 +18,7 @@ import (
 	"github.com/traefik/yaegi/stdlib/syscall"
 	"github.com/traefik/yaegi/stdlib/unrestricted"
 	"github.com/traefik/yaegi/stdlib/unsafe"
+	"github.com/google/uuid"
 )
 
 // content holds our static web server content.
@@ -92,7 +93,7 @@ type Property struct {
 
 type Object struct {
 	Properties map[string]Property
-	Id         int
+	Id         string
 }
 
 func panicErr(err error) {
@@ -118,11 +119,15 @@ func VisibleObjects(player *Object) []string {
 	return out
 }
 
+func FuckGo(cond bool, v1,v2 string) string{
+if cond {return v1} else {return v2}
+}
+
 func FormatObject(id string) string {
 	o := LoadObject(id)
 	var out string
 	loc := GetProp(id, "location")
-	out = out + fmt.Sprintf("\n\nObject %v, %v at %v\nVerbs\n-----\n", id, GetProp(ToStr(o.Id), "name"), GetProp(loc, "name"))
+	out = out + fmt.Sprintf("\n\nObject %v, %v at %v\n\nVerbs\n-----\n", id, GetProp(ToStr(o.Id), "name"), GetProp(loc, "name"))
 	o = LoadObject(id)
 	var verbs, props []string
 	for k, v := range o.Properties {
@@ -134,9 +139,11 @@ func FormatObject(id string) string {
 
 	}
 	out = out + strings.Join(verbs, ",") + "\n\nProperties\n----------\n" + strings.Join(props, ",") + "\n"
-	out = out + "Definitions\n-----------\n"
+	out = out + "\nDefinitions\n-----------\n"
 	for k, v := range o.Properties {
-		out = out + fmt.Sprintf("%v: %v\n", k, v)
+		out = out + fmt.Sprintf("%v(%v,%v,%v): %v\n", k, FuckGo(v.Verb, "Verb", "Noun"), FuckGo(v.Throff, "Throff", "Other"), v.Interpreter, v.Value)
+
+
 	}
 	return out
 }
@@ -155,7 +162,7 @@ func SaveObject(o *Object) {
 			log.Println("Lost connection to database at ", QueueServer, ", retrying")
 			time.Sleep(time.Second)
 		}
-		StoreObject(QueueServer, ToStr(o.Id), o)
+		StoreObject(QueueServer, o.Id, o)
 	} else {
 		os.Mkdir(DataDir, 0600)
 
@@ -285,7 +292,8 @@ func GetVerbStruct(o *Object, name string, timeout int) *Property {
 	return GetVerbStruct(LoadObject(parent), name, timeout-1)
 }
 
-func GetFreshId() int {
+func GetFreshId() string {
+	/* Maybe keep this as a mode, so user can switch at the command line?
 	root := LoadObject("1")
 	lastId := GetPropertyStruct(root, "lastId", 10)
 	if lastId == nil {
@@ -296,9 +304,15 @@ func GetFreshId() int {
 	id = id + 1
 	newLastId := fmt.Sprintf("%v", id)
 	lastId.Value = newLastId
+	
 	root.Properties["lastId"] = *lastId
 	SaveObject(root)
-	return id
+	return newLastId
+	*/
+
+	guid, err:= uuid.NewUUID()
+	panicErr(err)
+	return guid.String()
 }
 
 //Copy a loaded MOO object.  Saves the copy before returning
