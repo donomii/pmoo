@@ -565,6 +565,7 @@ func BuildDefinitions(player, this, verb, dobj, dpropstr, prepositionStr, iobj, 
 
 func VerbSearch(o *Object, aName string) (*Object, *Property) {
 	fmt.Println("Searching for verb", aName, "in",o)
+	os.Exit(1)
 	locId := GetPropertyStruct(o, "location", 10).Value
 	loc := LoadObject(locId)
 	roomContents := SplitStringList(GetPropertyStruct(loc, "contents", 10).Value)
