@@ -62,8 +62,7 @@ var Q chan *Message
 
 func SetQ(queue chan *Message) {
 	Q = queue
-	log.Printf(" set queue to %v", Q)
-
+	//log.Printf(" set queue to %v", Q)
 }
 
 func InputMsg(from, target, verb, arg1 string) {
@@ -185,13 +184,13 @@ func LoadObject(id string) *Object {
 		return FetchObject(QueueServer, id)
 	} else {
 		name := DataDir + "/" + id + ".json"
-		n_id, _ := strconv.Atoi(id)
-		id = ToStr(n_id)
 		log.Println("Loading " + name)
 		file, err := ioutil.ReadFile(name)
 		if err != nil {
+			log.Println("Failed to load"+ name)
 			file, err = fallback_objs.ReadFile("fallback/" + id + ".json")
 			if err != nil {
+				log.Println("Failed to load"+ name)
 				return nil
 			}
 		}
@@ -200,6 +199,7 @@ func LoadObject(id string) *Object {
 
 		err = json.Unmarshal([]byte(file), &data)
 		if err != nil {
+			log.Println("Failed to unmarshal"+ name, err)
 			return nil
 		}
 
@@ -564,7 +564,7 @@ func BuildDefinitions(player, this, verb, dobj, dpropstr, prepositionStr, iobj, 
 }
 
 func VerbSearch(o *Object, aName string) (*Object, *Property) {
-	fmt.Println("Searching for verb", aName, "in",o)
+	log.Println("Searching for verb", aName, "in",o)
 	locId := GetPropertyStruct(o, "location", 10).Value
 	loc := LoadObject(locId)
 	roomContents := SplitStringList(GetPropertyStruct(loc, "contents", 10).Value)
