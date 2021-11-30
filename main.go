@@ -184,7 +184,7 @@ func LoadObject(id string) *Object {
 		return FetchObject(QueueServer, id)
 	} else {
 		name := DataDir + "/" + id + ".json"
-		log.Println("Loading " + name)
+		log.Println("Loading '" + name+"'")
 		file, err := ioutil.ReadFile(name)
 		if err != nil {
 			log.Println("Failed to load"+ name)
@@ -625,7 +625,7 @@ func NameSearch(o *Object, aName, player string) (*Object, *Property) {
 	contents := SplitStringList(GetPropertyStruct(loc, "contents", 10).Value)
 	playerContents := SplitStringList(GetPropertyStruct(LoadObject(player), "contents", 10).Value)
 	contents = append(contents, playerContents...)
-	fmt.Println("Found contents", contents)
+	log.Println("Found contents", contents)
 	contents = append([]string{locId, ToStr(o.Id)}, contents...)
 	for _, objId := range contents {
 		obj := LoadObject(objId)
